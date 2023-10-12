@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EcoMonitoringIS"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="577" Width="1041"
+        Title="MainWindow" Height="577" Width="1041" MinHeight="577" MinWidth="1041"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -45,7 +45,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="85*"/>
+            <ColumnDefinition Width="85*" MaxWidth="350" MinWidth="200"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="262*"/>
         </Grid.ColumnDefinitions>
@@ -83,7 +83,7 @@
                 <RowDefinition Height="538*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#FF494949" >
+            <!--Grid Grid.Row="0" Background="#FF494949" >
                 <StackPanel x:Name="ToptNavigation" Orientation="Horizontal">
                     <Button Content="Таблиця1" Style="{StaticResource TopMenuButtonStyle}" />
                     <Button Content="Таблиця2" Style="{StaticResource TopMenuButtonStyle}" />
@@ -92,10 +92,10 @@
                     <Button Content="Таблиця5" Style="{StaticResource TopMenuButtonStyle}" />
 
                 </StackPanel>
-            </Grid>
+            </Grid-->
 
 
-            <Frame x:Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Content="{Binding CurPage}">
+            <Frame x:Name="MainFrame" Grid.RowSpan="2" NavigationUIVisibility="Hidden">
 
             </Frame>
 

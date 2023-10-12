@@ -51,7 +51,37 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="ComboBoxButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#26292f" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="20 5" />
+            <Style.Triggers >
+                <Trigger Property="IsMouseOver" Value="True">
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="#d9d9d9" />
+            <Setter Property="Foreground" Value="#26292f" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="30 20" />
+            <Setter Property="Padding" Value="2" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Page.Resources>
+
+
 
     <Grid Background="#26292f">
         <Grid.ColumnDefinitions>
@@ -68,7 +98,7 @@
         </ContentControl>
 
         <ContentControl Grid.Column="1">
-            <Border Background="#31343c" Margin="15 15 7 15" CornerRadius="10">
+            <Border Background="#31343c" Margin="8 15 15 15" CornerRadius="10">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.6" ShadowDepth="5"/>
                 </Border.Effect>
@@ -79,22 +109,47 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Оберіть таблицю для заповнення/редагування" Style="{StaticResource TextStyle}"/>
 
-            <ComboBox Style="{StaticResource ComboBoxStyle}" Grid.Row="1"/>
+            <ComboBox Style="{StaticResource ComboBoxStyle}" Grid.Row="1" DataContextChanged="ComboBox_DataContextChanged_1">
+                <Button x:Name="EnterprisesTable" Content="Enterprises" Width="auto" Style="{StaticResource ComboBoxButtonStyle}" Click="EnterprisesTable_Click" />
+                <Button x:Name="pollution" Content="Pollutions" Style="{StaticResource ComboBoxButtonStyle}" Click="pollution_Click" />
+                <Button x:Name="pollutant" Content="Pollutants" Style="{StaticResource ComboBoxButtonStyle}" Click="pollutant_Click" />
+                <Button x:Name="belonging" Content="Belongings" Style="{StaticResource ComboBoxButtonStyle}" Click="belonging_Click" />
+                <Button x:Name="results" Content="Results" Style="{StaticResource ComboBoxButtonStyle}" Click="results_Click" />
+            </ComboBox>
+            <DataGrid x:Name="DBGrid" Grid.Row="2" Style="{StaticResource DataGridStyle}">
+
+            </DataGrid>
         </Grid>
 
         <Grid Grid.Column="1">
+       
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+
             </Grid.RowDefinitions>
 
             <TextBlock Text="Вкажіть шлях до Excel або виберіть файл" Style="{StaticResource TextStyle}"/>
-
             <TextBox Style="{StaticResource TextBoxStyle}" Grid.Row="1"/>
+            <Button x:Name="BrowseButton" Grid.Row ="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="0 2 30 0"  Click="BrowseButton_Click" Grid.RowSpan="2" VerticalAlignment="Bottom">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <ImageBrush ImageSource="\View\Rec\Img\browse.png"/>
+                </Button.Background>
+            </Button>
+            <DataGrid Grid.Row="2" Style="{StaticResource DataGridStyle}">
+
+            </DataGrid>
+            <Button Content="Заповнити" Grid.Row="3" Height="30" Width="140" Margin="0 0 30 0" HorizontalAlignment="Right" Click="Button_Click"/>
         </Grid>
     </Grid>
 </Page>
