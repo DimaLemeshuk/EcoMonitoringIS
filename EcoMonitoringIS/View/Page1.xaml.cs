@@ -45,22 +45,15 @@ namespace EcoMonitoringIS.View
                 DBGridControl.DelOllColumn(DBGrid);
 
                 DBGrid.ItemsSource = context.Enterprises
-                    .Join(context.Belongings, e => e.BelongingId, b => b.Idbelonging, (e, b) => new Enterprise
-                    {
-                        Identerprise = e.Identerprise,
-                        Name = e.Name,
-                        Activity = e.Activity,
-                        Belonging = b,
-                        Addres = e.Addres
-                    }).ToList();
+                    .Include(e => e.Belonging)
+                    .ToList();
 
                 DBGridControl.AddColumn(DBGrid, "id", "Identerprise");
                 DBGridControl.AddColumn(DBGrid, "Назва", "Name");
                 DBGridControl.AddColumn(DBGrid, "Вид діяльності", "Activity");
-                DBGridControl.AddColumn(DBGrid, "Належність", "Belonging.Name"); // Зверніть увагу на "Belonging.Name"
+                DBGridControl.AddColumn(DBGrid, "Належність", "Belonging.Name");
                 DBGridControl.AddColumn(DBGrid, "Адреса", "Addres");
-
-                // Додайте подію для обробки редагування комірок DataGrid
+             
                 DBGrid.CellEditEnding += DBGrid_CellEditEndingEnterprises;
 
                 ChooseT.Text = ((Button)sender).Content.ToString();
@@ -145,34 +138,28 @@ namespace EcoMonitoringIS.View
 
                 if (editingElement != null)
                 {
-                    var NewValue = editingElement.Text;// Нове значення
-                    using (var db = new EcomonitoringdbContext())
+                    var NewValue = editingElement.Text;// Нове значення                   
+                    Enterprise Ent = context.Enterprises.FirstOrDefault(e => e == editedItem);
+                    if (newPropertyName.Equals("Name"))
                     {
-                        Enterprise Ent = context.Enterprises.FirstOrDefault(e => e == editedItem);///
-                        if (newPropertyName.Equals("Name"))
-                        {
-                            Ent.Name = NewValue;
-                        } else if (newPropertyName.Equals("Activity"))
-                        {
-                            Ent.Activity = NewValue;
-                        }
-                        else if (newPropertyName.Equals("Belonging.Name"))
-                        {
-                            Ent.Belonging = db.Belongings.FirstOrDefault(b => b.Name.Equals(NewValue));
-                        }
-                        else if (newPropertyName.Equals("Addres"))
-                        {
-                            Ent.Addres = NewValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Параметр неможливо змінити");
-                        }
-
-
-                        db.SaveChanges();
+                        Ent.Name = NewValue;
                     }
-
+                    else if (newPropertyName.Equals("Activity"))
+                    {
+                        Ent.Activity = NewValue;
+                    }
+                    else if (newPropertyName.Equals("Belonging.Name"))
+                    {
+                        Ent.Belonging = context.Belongings.FirstOrDefault(b => b.Name.Equals(NewValue));
+                    }
+                    else if (newPropertyName.Equals("Addres"))
+                    {
+                        Ent.Addres = NewValue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Параметр неможливо змінити");
+                    }
                 }
                 else
                 {
@@ -188,12 +175,57 @@ namespace EcoMonitoringIS.View
 
         private void DBGrid_CellEditEndingPollutions(object sender, DataGridCellEditEndingEventArgs e)
         {
-            MessageBox.Show("222222");
+            var dataGrid = (DataGrid)sender;
+            var editedItem = e.Row.Item;
+
+            if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
+            {
+                var newPropertyName = column.SortMemberPath;// Назва властивості
+                var editingElement = e.EditingElement as TextBox;
+
+                if (editingElement != null)
+                {
+                    var NewValue = editingElement.Text;// Нове значення                   
+                    Pollution obj = context.Pollutions.FirstOrDefault(e => e == editedItem);
+                    if (newPropertyName.Equals("Enterprise.Name"))
+                    {
+                        obj.Enterprise = context.Enterprises.FirstOrDefault(e => e.Name.Equals(NewValue));
+                    }
+                    else if (newPropertyName.Equals("Pollutant.Name"))
+                    {
+                        obj.Pollutant = context.Pollutants.FirstOrDefault(e => e.Name.Equals(NewValue));
+                    }             
+                    else if (newPropertyName.Equals("ValueMfr"))
+                    {
+                        obj.ValueMfr = double.Parse(NewValue);
+                    }
+                    else if (newPropertyName.Equals("Percent"))
+                    {
+                        obj.Percent = double.Parse(NewValue);
+                    }
+                    else if (newPropertyName.Equals("Year"))
+                    {
+                        obj.Percent = int.Parse(NewValue);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Параметр неможливо змінити");
+                    }
+                }
+                else
+                {
+                    // Обробка помилки: якщо editingElement має значення null
+                }
+            }
+            else
+            {
+                // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
+            }
         }
 
         private void SaveChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            DBGrid.ItemsSource = (System.Collections.IEnumerable)changedData;
+            context.SaveChanges();
         }
     }
 }
