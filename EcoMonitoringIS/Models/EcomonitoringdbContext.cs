@@ -100,9 +100,12 @@ public partial class EcomonitoringdbContext : DbContext
             entity.HasIndex(e => e.PollutantId, "poll_id_idx");
 
             entity.Property(e => e.Idpollution).HasColumnName("idpollution");
-            entity.Property(e => e.Date)
-                .HasColumnType("date")
-                .HasColumnName("date");
+            ////------
+            entity.Property(e => e.Year);
+            ////---------
+            //entity.Property(e => e.Date)
+            //    .HasColumnType("date")
+            //    .HasColumnName("date");
             entity.Property(e => e.EnterpriseId).HasColumnName("enterprise_id");
             entity.Property(e => e.Percent).HasColumnName("percent");
             entity.Property(e => e.PollutantId).HasColumnName("pollutant_id");

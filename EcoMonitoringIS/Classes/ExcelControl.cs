@@ -14,8 +14,9 @@ namespace EcoMonitoringIS.Classes
         public static DataTableCollection ExelToTableColl(string fileName)
         {
             DataTableCollection tableCollection =  null;
-            FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
-            //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            //FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
+            FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);////
             IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
             DataSet db = reader.AsDataSet(new ExcelDataSetConfiguration()
             {

@@ -45,6 +45,8 @@
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Margin" Value="30 0" />
             <Setter Property="Padding" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="Red" />
@@ -58,7 +60,9 @@
             <Setter Property="Foreground" Value="#26292f" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Margin" Value="20 5" />
+            <Setter Property="Margin" Value="0 0" />
+            <Setter Property="Padding" Value="30 2" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Style.Triggers >
                 <Trigger Property="IsMouseOver" Value="True">
 
@@ -77,6 +81,14 @@
                 <Trigger Property="IsMouseOver" Value="True">
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <Style x:Key="navExPageStackPanel" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0 0 30 0"/>
+
         </Style>
 
     </Page.Resources>
@@ -109,21 +121,29 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Оберіть таблицю для заповнення/редагування" Style="{StaticResource TextStyle}"/>
+            <TextBlock Text="Оберіть таблицю для заповнення" Style="{StaticResource TextStyle}"/>
 
-            <ComboBox Style="{StaticResource ComboBoxStyle}" Grid.Row="1" DataContextChanged="ComboBox_DataContextChanged_1">
-                <Button x:Name="EnterprisesTable" Content="Enterprises" Width="auto" Style="{StaticResource ComboBoxButtonStyle}" Click="EnterprisesTable_Click" />
-                <Button x:Name="pollution" Content="Pollutions" Style="{StaticResource ComboBoxButtonStyle}" Click="pollution_Click" />
-                <Button x:Name="pollutant" Content="Pollutants" Style="{StaticResource ComboBoxButtonStyle}" Click="pollutant_Click" />
-                <Button x:Name="belonging" Content="Belongings" Style="{StaticResource ComboBoxButtonStyle}" Click="belonging_Click" />
-                <Button x:Name="results" Content="Results" Style="{StaticResource ComboBoxButtonStyle}" Click="results_Click" />
+            <ComboBox x:Name="ChooseT" Style="{StaticResource ComboBoxStyle}" Grid.Row="1">
+                <Button x:Name="EnterprisesTable" Content="Enterprises" Style="{StaticResource ComboBoxButtonStyle}" Click="EnterprisesTable_Click"/>
+                <Button x:Name="Pollution" Content="Pollutions" Style="{StaticResource ComboBoxButtonStyle}" Click="pollution_Click"/>
+                <Button x:Name="Pollutant" Content="Pollutants" Style="{StaticResource ComboBoxButtonStyle}" Click="pollutant_Click"/>
+                <Button x:Name="belonging" Content="Belongings" Style="{StaticResource ComboBoxButtonStyle}" Click="belonging_Click"/>
+                <Button x:Name="results" Content="Results" Style="{StaticResource ComboBoxButtonStyle}" Click="results_Click"/>
             </ComboBox>
-            <DataGrid x:Name="DBGrid" Grid.Row="2" Style="{StaticResource DataGridStyle}">
+            <DataGrid x:Name="DBGrid" Grid.Row="2" Style="{StaticResource DataGridStyle}" Margin=" 30 20 30 30">
 
             </DataGrid>
+            <Button x:Name="RefreshButton" Grid.Row ="1" Width="25" Height="25" HorizontalAlignment="Right" Margin="0 2 30 30"  Click="RefreshButton_Click" Grid.RowSpan="2" VerticalAlignment="Bottom">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0.1"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <ImageBrush ImageSource="D:\Учоба\C#\KMLR1\KMLR1\img\refresh.png"/>
+                </Button.Background>
+            </Button>
         </Grid>
 
         <Grid Grid.Column="1">
@@ -131,13 +151,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
 
             </Grid.RowDefinitions>
 
             <TextBlock Text="Вкажіть шлях до Excel або виберіть файл" Style="{StaticResource TextStyle}"/>
-            <TextBox Style="{StaticResource TextBoxStyle}" Grid.Row="1"/>
+            <TextBox x:Name="PathTextBox1" Style="{StaticResource TextBoxStyle}" Grid.Row="1" TextChanged="PathTextBox1_TextChanged"/>
             <Button x:Name="BrowseButton" Grid.Row ="0" Width="30" Height="30" HorizontalAlignment="Right" Margin="0 2 30 0"  Click="BrowseButton_Click" Grid.RowSpan="2" VerticalAlignment="Bottom">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="#FF707070" Opacity="0"/>
@@ -146,10 +167,17 @@
                     <ImageBrush ImageSource="\View\Rec\Img\browse.png"/>
                 </Button.Background>
             </Button>
-            <DataGrid Grid.Row="2" Style="{StaticResource DataGridStyle}">
+            <DataGrid x:Name="DBGrid2" Grid.Row="2" CanUserSortColumns="False" CanUserReorderColumns="False" Style="{StaticResource DataGridStyle}" Margin="30 20 30 5">
 
             </DataGrid>
-            <Button Content="Заповнити" Grid.Row="3" Height="30" Width="140" Margin="0 0 30 0" HorizontalAlignment="Right" Click="Button_Click"/>
+            <StackPanel x:Name="navExPage" Grid.Row="3" Style="{StaticResource navExPageStackPanel}" Visibility="Collapsed">
+                <Image x:Name="navBefore" Source="\View\Rec\Img\navBefore.png" Width="25" RenderTransformOrigin="0.5,0.518" MouseLeftButtonDown="navBefore_MouseLeftButtonDown" />
+                <TextBlock  Text="Аркуш" FontSize="14" HorizontalAlignment="Center" Padding="0 3 0 0" Foreground="#d9d9d9"/>
+                <Label x:Name="ExcelPageNum" Content="1" FontSize="12" HorizontalAlignment="Center" Foreground="#d9d9d9"/>
+                <Image x:Name="navNext" Source="\View\Rec\Img\navNext.png" Width="25" RenderTransformOrigin="0.5,0.518" MouseLeftButtonDown="navNext_MouseLeftButtonDown" />
+            </StackPanel>
+            
+            <Button x:Name="fillButton" Content="Заповнити" Grid.Row="4" Height="30" Width="140" Margin="0 10 30 30" HorizontalAlignment="Right" Click="fillButton_Click"/>
         </Grid>
     </Grid>
 </Page>
