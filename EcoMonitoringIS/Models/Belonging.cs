@@ -11,6 +11,8 @@ public partial class Belonging
 
     public virtual ICollection<Enterprise> Enterprises { get; set; } = new List<Enterprise>();
 
+    public Belonging()
+    { }
     public Belonging(int idbelonging, string name)
     {
         Idbelonging = idbelonging;

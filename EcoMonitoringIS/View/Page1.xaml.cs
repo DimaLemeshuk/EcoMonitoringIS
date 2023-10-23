@@ -455,6 +455,11 @@ namespace EcoMonitoringIS.View
             try
             {
                 context.SaveChanges();
+                MessageBox.Show("Зміни успішно збережено");
+                if (CurBtn != null)
+                {
+                    CurBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }
             }
             catch (Exception ex)
             {
@@ -462,5 +467,63 @@ namespace EcoMonitoringIS.View
                 MessageBox.Show("Сталася помилка: " + ex.Message);
             }
         }
+
+        private void DelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DBGrid.SelectedItem != null)
+            {
+                var selectedItem = DBGrid.SelectedItem;
+
+                if (selectedItem is Enterprise enterprise)
+                {
+                    var id = enterprise.Identerprise;
+                    var entityToDelete = new Enterprise { Identerprise = id };
+                    context.Entry(entityToDelete).State = EntityState.Deleted;
+                }
+                else if (selectedItem is Pollution pollution)
+                {
+                    var id = pollution.Idpollution;
+                    var entityToDelete = new Pollution { Idpollution = id };
+                    context.Entry(entityToDelete).State = EntityState.Deleted;
+                }
+                else if (selectedItem is Pollutant pollutant)
+                {
+                    var id = pollutant.Idpollutant;
+                    var entityToDelete = new Pollutant { Idpollutant = id };
+                    context.Entry(entityToDelete).State = EntityState.Deleted;
+                }
+                else if (selectedItem is Belonging belonging)
+                {
+                    var id = belonging.Idbelonging;
+                    var entityToDelete = new Belonging { Idbelonging = id };
+                    context.Entry(entityToDelete).State = EntityState.Deleted;
+                }
+                else if (selectedItem is Result result)
+                {
+                    var id = result.Idresults;
+                    var entityToDelete = new Result { Idresults = id };
+                    context.Entry(entityToDelete).State = EntityState.Deleted;
+                }
+
+                try
+                {
+                    context.SaveChanges();
+                    MessageBox.Show("Дані видалено успішно");
+                    if (CurBtn != null)
+                    {
+                        CurBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Сталася помилка під час видалення: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Будь ласка, виділіть рядок, який ви хочете видалити.");
+            }
+        }
+
     }
 }
