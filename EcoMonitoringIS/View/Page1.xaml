@@ -105,12 +105,15 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
             <TextBlock Text="Оберіть таблицю для редагування" Style="{StaticResource TextStyle}"/>
             <Grid Grid.Row="1" Margin="0" Height="35">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
@@ -123,6 +126,7 @@
                 </ComboBox>
                 <Button x:Name="SaveChangeButton" Content="Зберегти зміни" Grid.Column="1" Height="30" Width="auto" Margin="0 0 30 0" HorizontalAlignment="Stretch" Click="SaveChangeButton_Click"/>
                 <Button x:Name="DelButton" Content="Видалити" Grid.Column="2" Height="30" Width="auto" Margin="0 0 30 0" HorizontalAlignment="Stretch" Click="DelButton_Click"/>
+                <Button x:Name="AddButton" Content="Додати" Grid.Column="3" Height="30" Width="auto" Margin="0 0 30 0" HorizontalAlignment="Stretch" Click="AddButton_Click"/>
             </Grid>
             
             <DataGrid x:Name="DBGrid" Grid.Row="2" Style="{StaticResource DataGridStyle}" Margin=" 30 20 30 30">
@@ -136,6 +140,11 @@
                     <ImageBrush ImageSource="D:\Учоба\C#\KMLR1\KMLR1\img\refresh.png"/>
                 </Button.Background>
             </Button>
+            <TextBlock Grid.Row="3" Text="Ведіть значення нового запису" Style="{StaticResource TextStyle}" Margin="30 10"/>
+            <Button x:Name="AddObjButton" Content="Додати" Grid.Row="3" Height="30" Width="100" Margin="0 0 30 0" HorizontalAlignment="Right" Click="AddObjButton_Click"/>
+            <DataGrid x:Name="DBGridAdd" Grid.Row="4" Style="{StaticResource DataGridStyle}" Margin=" 30 0 30 30">
+
+            </DataGrid>
         </Grid>
     </Grid>
  

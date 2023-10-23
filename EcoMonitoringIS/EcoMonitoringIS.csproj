@@ -8,8 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="View\baseline_upload_file_black_24dp.png" />
-    <None Remove="View\browser.svg" />
     <None Remove="View\Rec\Img\browse.png" />
     <None Remove="View\Rec\Img\navBefore.png" />
     <None Remove="View\Rec\Img\navNext.png" />
@@ -33,8 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="View\baseline_upload_file_black_24dp.png" />
-    <Resource Include="View\browser.svg" />
     <Resource Include="View\Rec\Img\browse.png" />
     <Resource Include="View\Rec\Img\navBefore.png" />
     <Resource Include="View\Rec\Img\navNext.png" />

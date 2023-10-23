@@ -39,6 +39,14 @@ public partial class Enterprise
         // Конструктор залишається пустим
     }
 
+    public Enterprise(string Name, string Activity, int BelongingId, string Addres)
+    {
+        this.Name = Name;
+        this.Activity = Activity;
+        this.BelongingId = BelongingId;
+        this.Addres = Addres;
+    }
+
     public void Initialize(string Name, string Activity, string BelongingName, string Addres)
     {
         using (var context = new EcomonitoringdbContext())

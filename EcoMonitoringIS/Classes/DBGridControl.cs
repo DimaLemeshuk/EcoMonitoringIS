@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,37 @@ namespace EcoMonitoringIS.Classes
         {
             DBGrid.Columns.Clear();
             DBGrid.AutoGenerateColumns = true;
+        }
+
+        public static void CopyColumnNames(DataGrid dataGrid1, DataGrid dataGrid2)
+        {
+
+            List<string> columnNames = new List<string>();
+
+            // Перевірка, чи імена стовпців були вже отримані
+
+            if (columnNames.Count == 0)
+            {
+                // Отримати імена стовпців з першого DataGrid (dataGrid1)
+                foreach (DataGridColumn column in dataGrid1.Columns)
+                {
+                    if (column is DataGridTextColumn textColumn)
+                    {
+                        columnNames.Add(textColumn.Header.ToString());
+                    }
+                }
+            }
+
+            if (dataGrid2.Items.Count == 0)
+            {
+                DataTable dataTable = new DataTable();
+                foreach (string columnName in columnNames)
+                {
+                    dataTable.Columns.Add(columnName, typeof(string));
+                }
+
+                dataGrid2.ItemsSource = dataTable.DefaultView;
+            }
         }
 
     }

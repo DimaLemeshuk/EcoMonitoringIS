@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -211,7 +212,7 @@ namespace EcoMonitoringIS.View
             else
             {
                 // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
-                MessageBox.Show(" editedItem не було успішно отримано \nабо поточна колонка не є DataGridBoundColumn");
+                MessageBox.Show("12 editedItem не було успішно отримано \nабо поточна колонка не є DataGridBoundColumn");
             }
 
         }
@@ -524,6 +525,199 @@ namespace EcoMonitoringIS.View
                 MessageBox.Show("Будь ласка, виділіть рядок, який ви хочете видалити.");
             }
         }
+    
 
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            DBGridAdd.ItemsSource = null; // Припиняємо відображення даних
+            DBGridAdd.Items.Clear();
+            DBGridControl.CopyColumnNames(DBGrid , DBGridAdd);
+        }
+
+        private void AddObjButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChooseT.Text == "Enterprises")
+            {
+                var lastRow = DBGridAdd.Items[0] as DataRowView;
+
+                if (lastRow != null)
+                {
+                    using (var db = new EcomonitoringdbContext())
+                    {
+                        string name = lastRow[1].ToString();
+                        string activity = lastRow[2].ToString();
+                        string belongingName = lastRow[3].ToString();
+                        string address = lastRow[4].ToString();
+                        Belonging? test;
+                        test = db.Belongings.FirstOrDefault(b => b.Name.Equals(belongingName));
+                        if (test == null)
+                        {
+                            MessageBox.Show("Значення Належність не має відповідника\nв таблиці Belongings");
+                        }
+                        else if (!string.IsNullOrWhiteSpace(name) || !string.IsNullOrWhiteSpace(activity) || !string.IsNullOrWhiteSpace(address))
+                        {
+                            var newEnterprise = new Enterprise();
+
+                            try
+                            {
+                                newEnterprise.Initialize(name, activity, belongingName, address);
+                                db.Enterprises.Add(newEnterprise);
+                                db.SaveChanges();
+                                MessageBox.Show("Дані успішно додано");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Сталася помилка: " + ex.Message);
+                            }
+                            ClearAndResetDBGridAdd();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Заповніть всі поля!");
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Помилка при отриманні даних з DBGridAdd.");
+                }
+            }
+            else if (ChooseT.Text == "Pollutions")
+            {
+                var lastRow = DBGridAdd.Items[0] as DataRowView;
+
+                if (lastRow != null)
+                {
+                    using (var db = new EcomonitoringdbContext())
+                    {
+                        string enterpriseName = lastRow[1].ToString();
+                        string pollutantName = lastRow[2].ToString();
+                        string valueMfrStr = lastRow[3].ToString();
+                        string percentStr = lastRow[4].ToString();
+                        string yearStr = lastRow[5].ToString();
+
+                        if (!string.IsNullOrWhiteSpace(enterpriseName) && !string.IsNullOrWhiteSpace(pollutantName) &&
+                            double.TryParse(valueMfrStr, out double valueMfr) &&
+                            double.TryParse(percentStr, out double percent) &&
+                            int.TryParse(yearStr, out int year))
+                        {
+                            Enterprise? enterprise = db.Enterprises.FirstOrDefault(e => e.Name.Equals(enterpriseName));
+                            Pollutant? pollutant = db.Pollutants.FirstOrDefault(p => p.Name.Equals(pollutantName));
+
+                            if (enterprise != null && pollutant != null)
+                            {
+                                // Блокування режиму редагування
+                                //DBGridAdd.CancelEdit();
+
+                                var newPollution = new Pollution
+                                {
+                                    EnterpriseId = enterprise.Identerprise,
+                                    PollutantId = pollutant.Idpollutant,
+                                    ValueMfr = valueMfr,
+                                    Percent = percent,
+                                    Year = year
+                                };
+
+                                try
+                                {
+                                    db.Pollutions.Add(newPollution);
+                                    db.SaveChanges();
+                                    MessageBox.Show("Дані успішно додано");
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Сталася помилка: " + ex.Message);
+                                }
+
+                                // Оновлення джерела даних
+                                DBGridAdd.ItemsSource = db.Pollutions.ToList();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Помилка: Підприємство або забруднювач не знайдено.");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Помилка: Перевірте введені дані.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Помилка при отриманні даних з DBGridAdd.");
+                }
+            }
+            else if (ChooseT.Text == "Pollutants")
+            {
+                var lastRow = DBGridAdd.Items[0] as DataRowView;
+
+                if (lastRow != null)
+                {
+                    using (var db = new EcomonitoringdbContext())
+                    {
+                        string name = lastRow[1].ToString();
+                        string dangerClass = lastRow[2].ToString();
+                        string gdk = lastRow[3].ToString();
+                        string mfr = lastRow[4].ToString();
+
+                        var newPollutant = new Pollutant();
+
+                        newPollutant.Name = name;
+                        newPollutant.DangerClass = dangerClass;
+
+                        double? gdkValue = null;
+                        if (double.TryParse(gdk, out double gdkResult))
+                        {
+                            gdkValue = gdkResult;
+                        }
+                        newPollutant.Gdk = gdkValue;
+
+                        double? mfrValue = null;
+                        if (double.TryParse(mfr, out double mfrResult))
+                        {
+                            mfrValue = mfrResult;
+                        }
+                        newPollutant.Mfr = mfrValue;
+
+                        try
+                        {
+                            db.Pollutants.Add(newPollutant);
+                            db.SaveChanges();
+                            MessageBox.Show("Дані успішно додано");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Сталася помилка: " + ex.Message);
+                        }
+
+                        DBGridAdd.ItemsSource = null; // Припиняємо відображення даних
+                        DBGridAdd.Items.Clear();
+                        DBGridControl.CopyColumnNames(DBGrid, DBGridAdd); // заново відображаємо пусті колонки
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Помилка при отриманні даних з DBGridAdd.");
+                }
+            }
+            else if (ChooseT.Text == "Belongings")
+            {
+
+            }
+            else if (ChooseT.Text == "Results")
+            {
+
+            }         
+        }
+
+        private void ClearAndResetDBGridAdd()
+        {
+            DBGridAdd.ItemsSource = null; // Припиняємо відображення даних
+            DBGridAdd.Items.Clear();
+            DBGridControl.CopyColumnNames(DBGrid, DBGridAdd);// заново відображаємо пусті колонки
+        }
     }
 }
