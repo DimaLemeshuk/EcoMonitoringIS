@@ -1,5 +1,6 @@
 ﻿using EcoMonitoringIS.Classes;
 using EcoMonitoringIS.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
 using System.Data;
@@ -30,34 +31,45 @@ namespace EcoMonitoringIS.View
         }
 
         private void EnterprisesTable_Click(object sender, RoutedEventArgs e)
-        {     
-            DBGridControl.DelOllColumn(DBGrid);
-            DBGrid.ItemsSource = context.Enterprises.Join(context.Belongings,
-            e => e.BelongingId,
-            b => b.Idbelonging,
-            (e, b) => new
+        {
+            using (var context = new EcomonitoringdbContext())
             {
-                Identerprise = e.Identerprise,
-                Name = e.Name,
-                Activity = e.Activity,
-                BelongingId = b.Name,
-                Addres = e.Addres
-            }).ToList();
-            DBGridControl.AddColumn(DBGrid, "id", "Identerprise");
-            DBGridControl.AddColumn(DBGrid, "Назва", "Name");
-            DBGridControl.AddColumn(DBGrid, "Вид діяльності", "Activity");
-            DBGridControl.AddColumn(DBGrid, "Належність", "BelongingId");
-            DBGridControl.AddColumn(DBGrid, "Адреса", "Addres");
-            ChooseT.Text = ((Button)sender).Content.ToString();
-            CurBtn = (Button)sender;
+
+                DBGridControl.DelOllColumn(DBGrid);
+
+                DBGrid.ItemsSource = context.Enterprises
+                    .Include(e => e.Belonging)
+                    .ToList();
+
+                DBGridControl.AddColumn(DBGrid, "id", "Identerprise");
+                DBGridControl.AddColumn(DBGrid, "Назва", "Name");
+                DBGridControl.AddColumn(DBGrid, "Вид діяльності", "Activity");
+                DBGridControl.AddColumn(DBGrid, "Належність", "Belonging.Name");
+                DBGridControl.AddColumn(DBGrid, "Адреса", "Addres");
+
+
+                ChooseT.Text = ((Button)sender).Content.ToString();
+                CurBtn = (Button)sender;
+            }
         }
 
         private void pollution_Click(object sender, RoutedEventArgs e)
         {
             using (EcomonitoringdbContext context = new EcomonitoringdbContext())
             {
+                DBGrid.ItemsSource = context.Pollutions
+                .Include(p => p.Enterprise)
+                .Include(p => p.Pollutant)
+                .ToList();
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Pollutions.ToList();
+                DBGridControl.AddColumn(DBGrid, "id", "Idpollution");
+                DBGridControl.AddColumn(DBGrid, "Підприємство", "Enterprise.Name");
+                DBGridControl.AddColumn(DBGrid, "Забрудник", "Pollutant.Name");
+                DBGridControl.AddColumn(DBGrid, "Викидив(т/рік)", "ValueMfr");
+                DBGridControl.AddColumn(DBGrid, "(%)від заг. викидів", "Percent");
+                DBGridControl.AddColumn(DBGrid, "Рік", "Year");
+
             }
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
@@ -70,6 +82,11 @@ namespace EcoMonitoringIS.View
             {
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Pollutants.ToList();
+                DBGridControl.AddColumn(DBGrid, "id", "Idpollutant");
+                DBGridControl.AddColumn(DBGrid, "Назва речовини", "Name");
+                DBGridControl.AddColumn(DBGrid, "Клас небезпеки", "DangerClass");
+                DBGridControl.AddColumn(DBGrid, "Граничнодопустимі\n викиди (мг/м3)", "Gdk");
+                DBGridControl.AddColumn(DBGrid, "Величина масової\n витрати (г/год)", "Mfr");
             }
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
@@ -81,6 +98,8 @@ namespace EcoMonitoringIS.View
             {
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Belongings.ToList();
+                DBGridControl.AddColumn(DBGrid, "id", "Idbelonging");
+                DBGridControl.AddColumn(DBGrid, "Відомча належність", "Name");
             }
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
@@ -92,6 +111,9 @@ namespace EcoMonitoringIS.View
             {
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Results.ToList();
+                DBGridControl.AddColumn(DBGrid, "id", "Idresults");
+                DBGridControl.AddColumn(DBGrid, "Перевищення", "Exceeding");
+                DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
             }
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
@@ -144,7 +166,7 @@ namespace EcoMonitoringIS.View
             }
 
         }
-        ///--------------------------------------------------------------------------------------------------------------------
+        ///-------------------------------------------------FillDBfromExcel---------------------------------------------------------------
 
         public static void FillEnterprises(DataTable table)
         {

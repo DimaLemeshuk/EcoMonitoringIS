@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 using Result = EcoMonitoringIS.Models.Result;
 
 namespace EcoMonitoringIS.View
@@ -55,12 +56,12 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Вид діяльності", "Activity");
                 DBGridControl.AddColumn(DBGrid, "Належність", "Belonging.Name");
                 DBGridControl.AddColumn(DBGrid, "Адреса", "Addres");
-             
+                CleanCellEditEnding();
                 DBGrid.CellEditEnding += DBGrid_CellEditEndingEnterprises;
-
-                ChooseT.Text = ((Button)sender).Content.ToString();
-                CurBtn = (Button)sender;
             }
+            //DBGrid.CellEditEnding += DBGrid_CellEditEndingEnterprises;
+            ChooseT.Text = ((Button)sender).Content.ToString();
+            CurBtn = (Button)sender;
         }
 
         private void pollution_Click(object sender, RoutedEventArgs e)
@@ -79,9 +80,10 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Викидив(т/рік)", "ValueMfr");
                 DBGridControl.AddColumn(DBGrid, "(%)від заг. викидів", "Percent");
                 DBGridControl.AddColumn(DBGrid, "Рік", "Year");
-
+                CleanCellEditEnding();
+                DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutions;
             }
-            DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutions;
+            //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutions;
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
 
@@ -98,8 +100,10 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Клас небезпеки", "DangerClass");
                 DBGridControl.AddColumn(DBGrid, "Граничнодопустимі\n викиди (мг/м3)", "Gdk");
                 DBGridControl.AddColumn(DBGrid, "Величина масової\n витрати (г/год)", "Mfr");
+                CleanCellEditEnding();
+                DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutants;
             }
-            DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutants;
+            //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutants;
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
         }
@@ -112,8 +116,10 @@ namespace EcoMonitoringIS.View
                 DBGrid.ItemsSource = context.Belongings.ToList();
                 DBGridControl.AddColumn(DBGrid, "id", "Idbelonging");
                 DBGridControl.AddColumn(DBGrid, "Відомча належність", "Name");
+                CleanCellEditEnding();
+                DBGrid.CellEditEnding += DBGrid_CellEditEndingBelongings;
             }
-            DBGrid.CellEditEnding += DBGrid_CellEditEndingBelongings;
+            //DBGrid.CellEditEnding += DBGrid_CellEditEndingBelongings;
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
         }
@@ -127,10 +133,21 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "id", "Idresults");
                 DBGridControl.AddColumn(DBGrid, "Перевищення", "Exceeding");
                 DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
+                CleanCellEditEnding();
+                DBGrid.CellEditEnding += DBGrid_CellEditEndingResults;
             }
-            DBGrid.CellEditEnding += DBGrid_CellEditEndingResults;
+            //DBGrid.CellEditEnding += DBGrid_CellEditEndingResults;
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
+        }
+
+        private void CleanCellEditEnding()
+        {
+            DBGrid.CellEditEnding -= DBGrid_CellEditEndingEnterprises;
+            DBGrid.CellEditEnding -= DBGrid_CellEditEndingPollutions;
+            DBGrid.CellEditEnding -= DBGrid_CellEditEndingPollutants;
+            DBGrid.CellEditEnding -= DBGrid_CellEditEndingBelongings;
+            DBGrid.CellEditEnding -= DBGrid_CellEditEndingResults;
         }
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
@@ -154,7 +171,7 @@ namespace EcoMonitoringIS.View
                 if (editingElement != null)
                 {
                     var NewValue = editingElement.Text;// Нове значення                   
-                    Enterprise Ent = context.Enterprises.FirstOrDefault(e => e == editedItem);
+                    Enterprise? Ent = context.Enterprises.FirstOrDefault(en => en == editedItem);
                     if (newPropertyName.Equals("Name"))
                     {
                         Ent.Name = NewValue;
@@ -165,7 +182,16 @@ namespace EcoMonitoringIS.View
                     }
                     else if (newPropertyName.Equals("Belonging.Name"))
                     {
-                        Ent.Belonging = context.Belongings.FirstOrDefault(b => b.Name.Equals(NewValue));
+                        Belonging? test;
+                        test = context.Belongings.FirstOrDefault(b => b.Name.Equals(NewValue));
+                        if (test != null)
+                        {
+                            Ent.Belonging = test;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення не має відповідника\nв таблиці Belongings");
+                        }
                     }
                     else if (newPropertyName.Equals("Addres"))
                     {
@@ -179,11 +205,13 @@ namespace EcoMonitoringIS.View
                 else
                 {
                     // Обробка помилки: якщо editingElement має значення null
+                    MessageBox.Show(" editingElement має значення null");
                 }
             }
             else
             {
                 // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
+                MessageBox.Show(" editedItem не було успішно отримано \nабо поточна колонка не є DataGridBoundColumn");
             }
 
         }
@@ -201,26 +229,63 @@ namespace EcoMonitoringIS.View
                 if (editingElement != null)
                 {
                     var NewValue = editingElement.Text;// Нове значення                   
-                    Pollution obj = context.Pollutions.FirstOrDefault(e => e == editedItem);
+                    Pollution? obj = context.Pollutions.FirstOrDefault(po => po == editedItem);
                     if (newPropertyName.Equals("Enterprise.Name"))
                     {
-                        obj.Enterprise = context.Enterprises.FirstOrDefault(e => e.Name.Equals(NewValue));
+                        Enterprise test = context.Enterprises.FirstOrDefault(en => en.Name.Equals(NewValue));
+                        if (test != null)
+                        {
+                            obj.Enterprise = test;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення не має відповідника\nв таблиці Enterprise");
+                        }                     
                     }
                     else if (newPropertyName.Equals("Pollutant.Name"))
-                    {
-                        obj.Pollutant = context.Pollutants.FirstOrDefault(e => e.Name.Equals(NewValue));
-                    }             
+                    {                     
+                        Pollutant? test = context.Pollutants.FirstOrDefault(po => po.Name.Equals(NewValue));
+                        if (test != null)
+                        {
+                            obj.Pollutant = test;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення не має відповідника\nв таблиці Pollutant");
+                        }
+                    }
                     else if (newPropertyName.Equals("ValueMfr"))
                     {
-                        obj.ValueMfr = double.Parse(NewValue);
+                        if (double.TryParse(NewValue, out double parsedValue))
+                        {
+                            obj.ValueMfr = parsedValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення має невірний тип (це не число)");
+                        }
                     }
                     else if (newPropertyName.Equals("Percent"))
                     {
-                        obj.Percent = double.Parse(NewValue);
+                        if (double.TryParse(NewValue, out double parsedValue))
+                        {
+                            obj.Percent = parsedValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення має невірний тип (це не число)");
+                        }
                     }
                     else if (newPropertyName.Equals("Year"))
                     {
-                        obj.Year = int.Parse(NewValue);
+                        if (int.TryParse(NewValue, out int parsedValue))
+                        {
+                            obj.Year = parsedValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення має невірний тип (це не ціле число)");
+                        }
                     }
                     else
                     {
@@ -252,22 +317,43 @@ namespace EcoMonitoringIS.View
                 {
 
                     var NewValue = editingElement.Text;// Нове значення                   
-                    Pollutant obj = context.Pollutants.FirstOrDefault(e => e == editedItem);
+                    Pollutant? obj = context.Pollutants.FirstOrDefault(pl => pl == editedItem);
                     if (newPropertyName.Equals("Name"))
                     {
                         obj.Name = NewValue;
                     }
                     else if (newPropertyName.Equals("DangerClass"))
                     {
-                        obj.DangerClass = int.Parse(NewValue);
+                        if (int.TryParse(NewValue, out int parsedValue))
+                        {
+                            obj.DangerClass = parsedValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення має невірний тип (це не ціле число)");
+                        }
                     }
                     else if (newPropertyName.Equals("Gdk"))
                     {
-                        obj.Gdk = double.Parse(NewValue);
+                        if (double.TryParse(NewValue, out double parsedValue))
+                        {
+                            obj.Gdk = parsedValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення має невірний тип (це не число)");
+                        }
                     }
                     else if (newPropertyName.Equals("Mfr"))
                     {
-                        obj.Mfr = double.Parse(NewValue);
+                        if (double.TryParse(NewValue, out double parsedValue))
+                        {
+                            obj.Mfr = parsedValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення має невірний тип (це не число)");
+                        }
                     }
                     else
                     {
@@ -298,7 +384,7 @@ namespace EcoMonitoringIS.View
                 if (editingElement != null)
                 {
                     var NewValue = editingElement.Text;// Нове значення                   
-                    Belonging obj = context.Belongings.FirstOrDefault(e => e == editedItem);
+                    Belonging? obj = context.Belongings.FirstOrDefault(b => b == editedItem);
                     if (newPropertyName.Equals("Name"))
                     {
                         obj.Name = NewValue;
@@ -336,10 +422,17 @@ namespace EcoMonitoringIS.View
                     DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
 
                     var NewValue = editingElement.Text;// Нове значення                   
-                    Result obj = context.Results.FirstOrDefault(e => e == editedItem);
+                    Result obj = context.Results.FirstOrDefault(r => r == editedItem);
                     if (newPropertyName.Equals("PollutionId"))
                     {
-                        obj.PollutionId = int.Parse(NewValue);
+                        if (int.TryParse(NewValue, out int parsedValue))
+                        {
+                            obj.PollutionId = parsedValue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Значення має невірний тип (це не ціле число)");
+                        }
                     }
                     else
                     {
@@ -359,7 +452,15 @@ namespace EcoMonitoringIS.View
 
         private void SaveChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                // Обробка винятку
+                MessageBox.Show("Сталася помилка: " + ex.Message);
+            }
         }
     }
 }
