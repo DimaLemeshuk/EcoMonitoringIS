@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EcoMonitoringIS.View;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -38,7 +39,7 @@ namespace EcoMonitoringIS.View
 
         private void Page3Button_Click(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Content = new Page3();
         }
     }
 }

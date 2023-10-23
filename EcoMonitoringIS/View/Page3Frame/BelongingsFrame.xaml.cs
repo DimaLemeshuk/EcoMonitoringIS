@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EcoMonitoringIS.View.Rec
+namespace EcoMonitoringIS.View.Page3Frame
 {
     /// <summary>
-    /// Interaction logic for Page3.xaml
+    /// Interaction logic for BelongingsFrame.xaml
     /// </summary>
-    public partial class Page3 : Page
+    public partial class BelongingsFrame : Page
     {
-        public Page3()
+        public BelongingsFrame()
         {
             InitializeComponent();
         }

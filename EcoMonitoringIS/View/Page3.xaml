@@ -1,4 +1,4 @@
-﻿<Page x:Class="EcoMonitoringIS.View.Page1"
+﻿<Page x:Class="EcoMonitoringIS.View.Page3"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:EcoMonitoringIS.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Page1">
+      Title="Page3">
     <Page.Resources>
         <Style x:Key="TextStyle" TargetType="TextBlock">
             <Setter Property="Background" Value="Transparent" />
@@ -93,14 +93,14 @@
     </Page.Resources>
 
     <Grid Background="#26292f">
-        
+
         <Border Background="#31343c" Margin="15 15 15 15" CornerRadius="10">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.6" ShadowDepth="5"/>
             </Border.Effect>
         </Border>
         <Grid>
-        
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -119,24 +119,15 @@
                     <Button x:Name="Pollution" Content="Pollutions" Style="{StaticResource ComboBoxButtonStyle}" Click="pollution_Click"/>
                     <Button x:Name="Pollutant" Content="Pollutants" Style="{StaticResource ComboBoxButtonStyle}" Click="pollutant_Click"/>
                     <Button x:Name="belonging" Content="Belongings" Style="{StaticResource ComboBoxButtonStyle}" Click="belonging_Click"/>
-                    <Button x:Name="results" Content="Results" Style="{StaticResource ComboBoxButtonStyle}" Click="results_Click"/>
                 </ComboBox>
-                <Button x:Name="SaveChangeButton" Content="Зберегти зміни" Grid.Column="1" Height="30" Width="auto" Margin="0 0 30 0" HorizontalAlignment="Stretch" Click="SaveChangeButton_Click"/>
-                <Button x:Name="DelButton" Content="Видалити" Grid.Column="2" Height="30" Width="auto" Margin="0 0 30 0" HorizontalAlignment="Stretch" Click="DelButton_Click"/>
             </Grid>
-            
-            <DataGrid x:Name="DBGrid" Grid.Row="2" Style="{StaticResource DataGridStyle}" Margin=" 30 20 30 30">
 
-            </DataGrid>
-            <Button x:Name="RefreshButton" Grid.Row ="1" Width="25" Height="25" HorizontalAlignment="Right" Margin="0 2 30 30"  Click="RefreshButton_Click" Grid.RowSpan="2" VerticalAlignment="Bottom">
-                <Button.BorderBrush>
-                    <SolidColorBrush Color="#FF707070" Opacity="0.1"/>
-                </Button.BorderBrush>
-                <Button.Background>
-                    <ImageBrush ImageSource="D:\Учоба\C#\KMLR1\KMLR1\img\refresh.png"/>
-                </Button.Background>
-            </Button>
+            <Grid x:Name="DBGrid" Grid.Row="2" Margin=" 30 20 30 30">
+                <Frame x:Name="MainFrame" Grid.RowSpan="2" NavigationUIVisibility="Hidden">
+                    
+                </Frame>
+            </Grid>
         </Grid>
     </Grid>
- 
+
 </Page>

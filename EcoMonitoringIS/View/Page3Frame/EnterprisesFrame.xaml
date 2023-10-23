@@ -1,0 +1,128 @@
+﻿<Page x:Class="EcoMonitoringIS.View.Page3Frame.EnterprisesFrame"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EcoMonitoringIS.View.Page3Frame"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EnterprisesFrame">
+    <Page.Resources>
+        <Style x:Key="TextStyle" TargetType="TextBlock">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#d9d9d9" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="30 30 30 10" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#d9d9d9" />
+            <Setter Property="Foreground" Value="#26292f" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0 20 30 20" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="#d9d9d9" />
+            <Setter Property="Foreground" Value="#26292f" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0 30 20 30" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Height" Value="40"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ComboBoxButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#26292f" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0 0" />
+            <Setter Property="Padding" Value="30 2" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Style.Triggers >
+                <Trigger Property="IsMouseOver" Value="True">
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Page.Resources>
+
+    <Grid Background="#31343c">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.ColumnSpan="2" Grid.Row="0" Background="#26292f" Margin="15 15 15 15" CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.6" ShadowDepth="5"/>
+            </Border.Effect>
+        </Border>
+        <Border Grid.ColumnSpan="2" Grid.Row="1" Background="#26292f" Margin="15 15 15 15" CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.6" ShadowDepth="5"/>
+            </Border.Effect>
+        </Border>
+        <Border Grid.ColumnSpan="2" Grid.Row="2" Background="#26292f" Margin="15 15 15 15" CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.6" ShadowDepth="5"/>
+            </Border.Effect>
+        </Border>
+        <Border Grid.ColumnSpan="2" Grid.Row="3" Background="#26292f" Margin="15 15 15 15" CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.6" ShadowDepth="5"/>
+            </Border.Effect>
+        </Border>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Назва підприемства" Style="{StaticResource TextStyle}"/>
+        <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Вид економічної діяльності" Style="{StaticResource TextStyle}"/>
+        <TextBox x:Name="ActivityTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Відомча належність" Style="{StaticResource TextStyle}"/>
+        <TextBox x:Name="BelongingTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyle}" />
+
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Адреса" Style="{StaticResource TextStyle}"/>
+        <TextBox x:Name="AddresTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBoxStyle}" />
+
+        <Button Grid.Row="4" Grid.Column="1" Height="40" Width="200" HorizontalAlignment="Right" Margin="0 0 20 0" Content="Заповнити" Click="Button_Click"/> 
+    </Grid>
+</Page>
