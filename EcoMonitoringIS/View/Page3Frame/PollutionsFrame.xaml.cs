@@ -1,18 +1,8 @@
 ﻿using EcoMonitoringIS.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EcoMonitoringIS.View.Page3Frame
 {
@@ -29,39 +19,73 @@ namespace EcoMonitoringIS.View.Page3Frame
         private void FillBtn_Click(object sender, RoutedEventArgs e)
         {
             // Отримання введених даних з TextBox
-            string enterpriseName = EnterpriseTextBox.Text;
-            string pollutantName = PollutantTextBox.Text;
-            double valueMfr = Convert.ToDouble(ValueMfrTextBox.Text);
-            double percent = Convert.ToDouble(PercentTextBox.Text);
-            int year = Convert.ToInt32(YearTextBox.Text);
+            Enterprise? enterprise;
+            Pollutant? pollutant;
+            double valueMfr;
+            double percent;
+            int year;
 
-            using (var context = new EcomonitoringdbContext())
+
+            if (string.IsNullOrWhiteSpace(EnterpriseTextBox.Text) || string.IsNullOrWhiteSpace(PollutantTextBox.Text) || string.IsNullOrWhiteSpace(ValueMfrTextBox.Text) || string.IsNullOrWhiteSpace(PercentTextBox.Text) || string.IsNullOrWhiteSpace(YearTextBox.Text))
             {
-                // Отримання або створення підприємства та забрудника
-                Enterprise enterprise = context.Enterprises.FirstOrDefault(ent => ent.Name == enterpriseName) ?? new Enterprise { Name = enterpriseName };
-                Pollutant pollutant = context.Pollutants.FirstOrDefault(pol => pol.Name == pollutantName) ?? new Pollutant { Name = pollutantName };
-
-                // Створення нового запису Pollution
-                var newPollution = new Pollution
+                MessageBox.Show("Заповніть всі поля!");
+            }
+            else
+            {
+                using (var context = new EcomonitoringdbContext())
                 {
-                    Enterprise = enterprise,
-                    Pollutant = pollutant,
-                    ValueMfr = valueMfr,
-                    Percent = percent,
-                    Year = year
-                };
 
-                context.Pollutions.Add(newPollution);
+                    enterprise = context.Enterprises.FirstOrDefault(ent => ent.Name == EnterpriseTextBox.Text);
+                    pollutant = context.Pollutants.FirstOrDefault(pol => pol.Name == PollutantTextBox.Text);
+                    if (enterprise == null)
+                    {
+                        MessageBox.Show("Недійсне значення підприємства.");
+                        return;
+                    }
+                    else if (pollutant == null)
+                    {
+                        MessageBox.Show("Недійсне значення забрудника");
+                        return;
+                    }
+                    else if (!double.TryParse(ValueMfrTextBox.Text.Replace('.', ','), out valueMfr))
+                    {
+                        MessageBox.Show("Недійсне значення викидів");
+                        return;
+                    }
+                    else if (!double.TryParse(PercentTextBox.Text.Replace('.', ','), out percent))
+                    {
+                        MessageBox.Show("Недійсне значення відсотку викидів");
+                        return;
+                    }
+                    else if (!int.TryParse(PercentTextBox.Text, out year))
+                    {
+                        MessageBox.Show("Недійсне значення року");
+                        return;
+                    }
 
-                try
-                {
-                    context.SaveChanges();
-                    MessageBox.Show("Дані успішно додано");
+
+                    // Створення нового запису Pollution
+                    var newPollution = new Pollution
+                    {
+                        Enterprise = enterprise,
+                        Pollutant = pollutant,
+                        ValueMfr = valueMfr,
+                        Percent = percent,
+                        Year = year
+                    };         
+
+                    try
+                    {
+                        context.Pollutions.Add(newPollution);
+                        context.SaveChanges();
+                        MessageBox.Show("Дані успішно додано");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка: " + ex.Message);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Сталася помилка: " + ex.Message);
-                }
+
             }
 
             // Очищення полів для введення даних

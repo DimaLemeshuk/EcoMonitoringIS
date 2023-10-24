@@ -1,18 +1,7 @@
 ﻿using EcoMonitoringIS.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EcoMonitoringIS.View.Page3Frame
 {
@@ -30,51 +19,53 @@ namespace EcoMonitoringIS.View.Page3Frame
         {
             // Отримайте дані із TextBox для створення нового запису в базі даних
             string name = NameTextBox.Text;
-            string dangerClass = DangerClassTextBox.Text;
+            int dangerClass;
             double gdk;
             double mfr;
 
-            if (Double.TryParse(GdkTextBox.Text, out double gdkValue))
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(DangerClassTextBox.Text) || string.IsNullOrWhiteSpace(GdkTextBox.Text) || string.IsNullOrWhiteSpace(MfrTextBox.Text))
             {
-                gdk = gdkValue;
+                MessageBox.Show("Заповніть всі поля!");
             }
             else
             {
-                MessageBox.Show("Недійсне значення для Граничнодопустимих викидів.");
-                return;
-            }
-
-            if (Double.TryParse(MfrTextBox.Text, out double mfrValue))
-            {
-                mfr = mfrValue;
-            }
-            else
-            {
-                MessageBox.Show("Недійсне значення для Величини масової витрати.");
-                return;
-            }
-
-            // Створення нового запису в базі даних
-            using (EcomonitoringdbContext context = new EcomonitoringdbContext())
-            {
-                var newPollutant = new Pollutant
+                if (!Double.TryParse(GdkTextBox.Text.Replace('.', ','), out gdk))
                 {
-                    Name = name,
-                    DangerClass = int.Parse(dangerClass),
-                    Gdk = gdk,
-                    Mfr = mfr
-                };
-
-                context.Pollutants.Add(newPollutant);
-
-                try
-                {
-                    context.SaveChanges();
-                    MessageBox.Show("Дані успішно додано до бази даних.");
+                    MessageBox.Show("Недійсне значення для Граничнодопустимих викидів.");
+                    return;
                 }
-                catch (Exception ex)
+                else if (!Double.TryParse(MfrTextBox.Text.Replace('.', ','), out mfr))
                 {
-                    MessageBox.Show("Сталася помилка: " + ex.Message);
+                    MessageBox.Show("Недійсне значення для Величини масової витрати.");
+                    return;
+                }
+                else if (!int.TryParse(DangerClassTextBox.Text, out dangerClass))
+                {
+                    MessageBox.Show("Недійсне значення для Класу небезпеки.");
+                    return;
+                }
+
+                // Створення нового запису в базі даних
+                using (EcomonitoringdbContext context = new EcomonitoringdbContext())
+                {
+                    var newPollutant = new Pollutant
+                    {
+                        Name = name,
+                        DangerClass = dangerClass,
+                        Gdk = gdk,
+                        Mfr = mfr
+                    };
+
+                    try
+                    {
+                        context.Pollutants.Add(newPollutant);
+                        context.SaveChanges();
+                        MessageBox.Show("Дані успішно додано до бази даних.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка: " + ex.Message);
+                    }
                 }
             }
 

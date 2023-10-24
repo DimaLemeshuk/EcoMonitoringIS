@@ -257,6 +257,7 @@ namespace EcoMonitoringIS.View
                     }
                     else if (newPropertyName.Equals("ValueMfr"))
                     {
+                        NewValue = NewValue.Replace('.', ',');
                         if (double.TryParse(NewValue, out double parsedValue))
                         {
                             obj.ValueMfr = parsedValue;
@@ -268,6 +269,7 @@ namespace EcoMonitoringIS.View
                     }
                     else if (newPropertyName.Equals("Percent"))
                     {
+                        NewValue = NewValue.Replace('.', ',');
                         if (double.TryParse(NewValue, out double parsedValue))
                         {
                             obj.Percent = parsedValue;
@@ -336,6 +338,7 @@ namespace EcoMonitoringIS.View
                     }
                     else if (newPropertyName.Equals("Gdk"))
                     {
+                        NewValue = NewValue.Replace('.', ',');
                         if (double.TryParse(NewValue, out double parsedValue))
                         {
                             obj.Gdk = parsedValue;
@@ -347,6 +350,7 @@ namespace EcoMonitoringIS.View
                     }
                     else if (newPropertyName.Equals("Mfr"))
                     {
+                        NewValue = NewValue.Replace('.', ',');
                         if (double.TryParse(NewValue, out double parsedValue))
                         {
                             obj.Mfr = parsedValue;

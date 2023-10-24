@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EcoMonitoringIS.Models;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EcoMonitoringIS.View.Page3Frame
 {
@@ -24,5 +14,42 @@ namespace EcoMonitoringIS.View.Page3Frame
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string Name = NameTextBox.Text;
+            string Additional = AdditionalTextBox.Text;
+
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                MessageBox.Show("Заповніть поле відомча належність!");
+                return;
+            }
+            else
+            {
+                using (EcomonitoringdbContext context = new EcomonitoringdbContext())
+                {
+                    var newBelonging = new Belonging
+                    {
+                        Name = Name,
+                    };
+
+                    try
+                    {
+                        context.Belongings.Add(newBelonging);
+                        context.SaveChanges();
+                        MessageBox.Show("Дані успішно додано до бази даних.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка: " + ex.Message);
+                    }
+                }
+            }
+
+            // Очистка TextBox після додавання даних
+            NameTextBox.Clear();
+            AdditionalTextBox.Clear();
+        }        
     }
 }

@@ -1,19 +1,9 @@
 ﻿using EcoMonitoringIS.Models;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace EcoMonitoringIS.View.Page3Frame
 {
@@ -45,9 +35,17 @@ namespace EcoMonitoringIS.View.Page3Frame
                     {
                         var b = db.Belongings.FirstOrDefault(b => b.Idbelonging == BelongingId);
                         if (b != null)
-                        {
-                            db.Enterprises.Add(new Enterprise(Name, Activity, BelongingId, Addres));
-                            db.SaveChanges();
+                        {                         
+                            try
+                            {
+                                db.Enterprises.Add(new Enterprise(Name, Activity, BelongingId, Addres));
+                                db.SaveChanges();
+                                MessageBox.Show("Дані успішно додано");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Сталася помилка: " + ex.Message);
+                            }
                         }
                         else
                         {
@@ -63,8 +61,16 @@ namespace EcoMonitoringIS.View.Page3Frame
                         var b = db.Belongings.FirstOrDefault(b => b.Name == Belonging);
                         if (b != null)
                         {
-                            db.Enterprises.Add(new Enterprise(Name, Activity, b.Idbelonging, Addres));
-                            db.SaveChanges();
+                            try
+                            {
+                                db.Enterprises.Add(new Enterprise(Name, Activity, b.Idbelonging, Addres));
+                                db.SaveChanges();
+                                MessageBox.Show("Дані успішно додано");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Сталася помилка: " + ex.Message);
+                            }
                         }
                         else
                         {
