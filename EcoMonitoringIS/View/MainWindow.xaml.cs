@@ -1,6 +1,7 @@
 ﻿using EcoMonitoringIS.View;
 using System;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace EcoMonitoringIS.View
@@ -13,6 +14,8 @@ namespace EcoMonitoringIS.View
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Content = new Page1();
+            //Page1Button.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x25, 0x6F, 0x46));
 
             var timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;

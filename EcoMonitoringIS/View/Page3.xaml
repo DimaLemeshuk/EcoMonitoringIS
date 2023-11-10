@@ -107,7 +107,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Оберіть таблицю для редагування" Style="{StaticResource TextStyle}"/>
+            <TextBlock Text="Оберіть таблицю для додавання нових значень" Style="{StaticResource TextStyle}"/>
             <Grid Grid.Row="1" Margin="0" Height="35">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2.5*"/>

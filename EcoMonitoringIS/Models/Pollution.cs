@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace EcoMonitoringIS.Models;
 
@@ -31,13 +32,20 @@ public partial class Pollution
     {
         using (var context = new EcomonitoringdbContext())
         {
-            var e = context.Enterprises.FirstOrDefault(e => e.Name == Enterprise);
-            var p = context.Pollutants.FirstOrDefault(p => p.Name == Pollutant);
-            EnterpriseId = e.Identerprise;
-            PollutantId = p.Idpollutant;
-            ValueMfr = valueMfr;
-            Percent = percent;
-            Year = year;
+            //try
+            //{
+                var e = context.Enterprises.FirstOrDefault(e => e.Name == Enterprise);
+                var p = context.Pollutants.FirstOrDefault(p => p.Name == Pollutant);
+                EnterpriseId = e.Identerprise;
+                PollutantId = p.Idpollutant;
+                ValueMfr = valueMfr;
+                Percent = percent;
+                Year = year;
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Сталася помилка: " + ex.Message);
+            //}
         }
     }
 }

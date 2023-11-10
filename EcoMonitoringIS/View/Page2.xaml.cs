@@ -181,6 +181,7 @@ namespace EcoMonitoringIS.View
                         db.Enterprises.Add(e);
                     }
                     db.SaveChanges();
+                    MessageBox.Show("Дані успішно додано");
                 }
                 catch (Exception ex)
                 {
@@ -216,6 +217,7 @@ namespace EcoMonitoringIS.View
                         
                     }
                     db.SaveChanges();
+                    MessageBox.Show("Дані успішно додано");
                 }
                 catch (Exception ex)
                 {
@@ -240,7 +242,8 @@ namespace EcoMonitoringIS.View
                         db.Pollutants.Add(new Pollutant(row[0].ToString(), Int32.Parse(row[1].ToString()), (double)row[2], (double)row[3]));
                     }
                     db.SaveChanges();
-            }
+                    MessageBox.Show("Дані успішно додано");
+                }
                 catch (Exception ex)
             {
                 MessageBox.Show("Сталася помилка3: " + ex.Message);

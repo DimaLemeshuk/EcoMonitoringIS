@@ -67,9 +67,9 @@
 
             <Grid  Grid.Row="2" >
                 <StackPanel x:Name="LeftNavigation"  Orientation="Vertical" Margin="0 10" Background="Transparent">
-                    <Button x:Name="Page1Button" Content="Some text" Style="{StaticResource LeftMenuButtonStyle}" Click="Page1Button_Click" />
-                    <Button x:Name="Page2Button" Content="Some text" Style="{StaticResource LeftMenuButtonStyle}" Click="Page2Button_Click" />
-                    <Button x:Name="Page3Button" Content="Some text" Style="{StaticResource LeftMenuButtonStyle}" Click="Page3Button_Click" />
+                    <Button x:Name="Page1Button" Content="Редагувати БД" Style="{StaticResource LeftMenuButtonStyle}" Click="Page1Button_Click" />
+                    <Button x:Name="Page2Button" Content="Імпорт з Excel" Style="{StaticResource LeftMenuButtonStyle}" Click="Page2Button_Click" />
+                    <Button x:Name="Page3Button" Content="Додати нові дані" Style="{StaticResource LeftMenuButtonStyle}" Click="Page3Button_Click" />
                     <Button x:Name="Page4Button" Content="Some text" Style="{StaticResource LeftMenuButtonStyle}" />
                     <Button x:Name="Page5Button" Content="Some text" Style="{StaticResource LeftMenuButtonStyle}" />
                 </StackPanel>

@@ -44,7 +44,7 @@ namespace EcoMonitoringIS.View
         private void EnterprisesTable_Click(object sender, RoutedEventArgs e)
         {
             using (var context = new EcomonitoringdbContext())
-            {               
+            {
 
                 DBGridControl.DelOllColumn(DBGrid);
 
@@ -164,58 +164,122 @@ namespace EcoMonitoringIS.View
             var dataGrid = (DataGrid)sender;
             var editedItem = e.Row.Item;
 
-            if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
+            using (var context = new EcomonitoringdbContext())
             {
-                var newPropertyName = column.SortMemberPath;// Назва властивості
-                var editingElement = e.EditingElement as TextBox;
 
-                if (editingElement != null)
+                if (editedItem is Enterprise enterprise)
                 {
-                    var NewValue = editingElement.Text;// Нове значення                   
-                    Enterprise? Ent = context.Enterprises.FirstOrDefault(en => en == editedItem);
-                    if (newPropertyName.Equals("Name"))
+                    try
                     {
-                        Ent.Name = NewValue;
+                        context.Remove(enterprise);
                     }
-                    else if (newPropertyName.Equals("Activity"))
+                    catch (Exception ex)
                     {
-                        Ent.Activity = NewValue;
+                        MessageBox.Show("Сталася помилка при видаленні Enterprise : " + ex.Message);
                     }
-                    else if (newPropertyName.Equals("Belonging.Name"))
+
+                }
+                else if (editedItem is Pollution pollution)
+                {
+                    try
                     {
-                        Belonging? test;
-                        test = context.Belongings.FirstOrDefault(b => b.Name.Equals(NewValue));
-                        if (test != null)
-                        {
-                            Ent.Belonging = test;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення не має відповідника\nв таблиці Belongings");
-                        }
+                        context.Remove(pollution);
                     }
-                    else if (newPropertyName.Equals("Addres"))
+                    catch (Exception ex)
                     {
-                        Ent.Addres = NewValue;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Параметр неможливо змінити");
+                        MessageBox.Show("Сталася помилка при видаленні Pollution: " + ex.Message);
                     }
                 }
-                else
+                else if (editedItem is Pollutant pollutant)
                 {
-                    // Обробка помилки: якщо editingElement має значення null
-                    MessageBox.Show(" editingElement має значення null");
-                }
-            }
-            else
-            {
-                // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
-                MessageBox.Show("12 editedItem не було успішно отримано \nабо поточна колонка не є DataGridBoundColumn");
-            }
+                    try
+                    {
+                        context.Remove(pollutant);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при видаленні Pollutant: " + ex.Message);
+                    }
 
-        }
+                }
+                else if (editedItem is Belonging belonging)
+                {
+                    try
+                    {
+                        context.Remove(belonging);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при видаленні Belonging: " + ex.Message);
+                    }
+
+                }
+                else if (editedItem is Result result)
+                {
+                    try
+                    {
+                        context.Remove(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при видаленні Result: " + ex.Message);
+                    }
+
+                    //var dataGrid = (DataGrid)sender;
+                    //var editedItem = e.Row.Item;
+
+                    //if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
+                    //{
+                    //    var newPropertyName = column.SortMemberPath;// Назва властивості
+                    //    var editingElement = e.EditingElement as TextBox;
+
+                    //    if (editingElement != null)
+                    //    {
+                    //        var NewValue = editingElement.Text;// Нове значення                   
+                    //        Enterprise? Ent = context.Enterprises.FirstOrDefault(en => en == editedItem);
+                    //        if (newPropertyName.Equals("Name"))
+                    //        {
+                    //            Ent.Name = NewValue;
+                    //        }
+                    //        else if (newPropertyName.Equals("Activity"))
+                    //        {
+                    //            Ent.Activity = NewValue;
+                    //        }
+                    //        else if (newPropertyName.Equals("Belonging.Name"))
+                    //        {
+                    //            Belonging? test;
+                    //            test = context.Belongings.FirstOrDefault(b => b.Name.Equals(NewValue));
+                    //            if (test != null)
+                    //            {
+                    //                Ent.Belonging = test;
+                    //            }
+                    //            else
+                    //            {
+                    //                MessageBox.Show("Значення не має відповідника\nв таблиці Belongings");
+                    //            }
+                    //        }
+                    //        else if (newPropertyName.Equals("Addres"))
+                    //        {
+                    //            Ent.Addres = NewValue;
+                    //        }
+                    //        else
+                    //        {
+                    //            MessageBox.Show("Параметр неможливо змінити");
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        // Обробка помилки: якщо editingElement має значення null
+                    //        MessageBox.Show(" editingElement має значення null");
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
+                    //    MessageBox.Show("12 editedItem не було успішно отримано \nабо поточна колонка не є DataGridBoundColumn");
+                    //}
+
+                }
 
         private void DBGrid_CellEditEndingPollutions(object sender, DataGridCellEditEndingEventArgs e)
         {
@@ -241,10 +305,10 @@ namespace EcoMonitoringIS.View
                         else
                         {
                             MessageBox.Show("Значення не має відповідника\nв таблиці Enterprise");
-                        }                     
+                        }
                     }
                     else if (newPropertyName.Equals("Pollutant.Name"))
-                    {                     
+                    {
                         Pollutant? test = context.Pollutants.FirstOrDefault(po => po.Name.Equals(NewValue));
                         if (test != null)
                         {
@@ -393,7 +457,7 @@ namespace EcoMonitoringIS.View
                     if (newPropertyName.Equals("Name"))
                     {
                         obj.Name = NewValue;
-                    }               
+                    }
                     else
                     {
                         MessageBox.Show("Параметр неможливо змінити");
@@ -475,61 +539,23 @@ namespace EcoMonitoringIS.View
 
         private void DelButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DBGrid.SelectedItem != null)
+            if (DBGrid.SelectedItems != null)
             {
-                var selectedItem = DBGrid.SelectedItem;
-
-                if (selectedItem is Enterprise enterprise)
+                foreach (var selectedItem in DBGrid.SelectedItems)
                 {
-                    var id = enterprise.Identerprise;
-                    var entityToDelete = new Enterprise { Identerprise = id };
-                    context.Entry(entityToDelete).State = EntityState.Deleted;
+                    DataControl.deleteRov(DBGrid, selectedItem);
                 }
-                else if (selectedItem is Pollution pollution)
+                if (CurBtn != null)
                 {
-                    var id = pollution.Idpollution;
-                    var entityToDelete = new Pollution { Idpollution = id };
-                    context.Entry(entityToDelete).State = EntityState.Deleted;
-                }
-                else if (selectedItem is Pollutant pollutant)
-                {
-                    var id = pollutant.Idpollutant;
-                    var entityToDelete = new Pollutant { Idpollutant = id };
-                    context.Entry(entityToDelete).State = EntityState.Deleted;
-                }
-                else if (selectedItem is Belonging belonging)
-                {
-                    var id = belonging.Idbelonging;
-                    var entityToDelete = new Belonging { Idbelonging = id };
-                    context.Entry(entityToDelete).State = EntityState.Deleted;
-                }
-                else if (selectedItem is Result result)
-                {
-                    var id = result.Idresults;
-                    var entityToDelete = new Result { Idresults = id };
-                    context.Entry(entityToDelete).State = EntityState.Deleted;
+                    CurBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 }
 
-                try
-                {
-                    context.SaveChanges();
-                    MessageBox.Show("Дані видалено успішно");
-                    if (CurBtn != null)
-                    {
-                        CurBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Сталася помилка під час видалення: " + ex.Message);
-                }
             }
             else
             {
                 MessageBox.Show("Будь ласка, виділіть рядок, який ви хочете видалити.");
             }
         }
-   
 
     }
 }
