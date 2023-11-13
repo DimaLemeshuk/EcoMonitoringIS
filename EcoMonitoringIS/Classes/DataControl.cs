@@ -8,6 +8,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
 using System.Windows;
 using System.Data.Entity;
+using System.Reflection;
+using System.Windows.Data;
 
 namespace EcoMonitoringIS.Classes
 {
@@ -86,11 +88,107 @@ namespace EcoMonitoringIS.Classes
                     MessageBox.Show("Сталася помилка під час видалення: " + ex.Message);
                 }
             }
-
-                
-            
         }
 
+        public static void updateRow(DataGridCellEditEndingEventArgs e, System.Object editedItem)
+        {
+            var editedValue = (e.EditingElement as TextBox).Text;// Отримайте значення комірки, яку редагуєте
+
+            using (var context = new EcomonitoringdbContext())
+            {
+                if (editedItem is Enterprise enterprise)
+                {
+                    try
+                    {
+                        var curr = context.Enterprises.Find(enterprise.Identerprise);
+                        Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
+                        string propertyName = binding.Path.Path;//змінене поле   
+                        PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
+                        propertyInfo.SetValue(curr, editedValue);
+                        context.SaveChanges();
+                        MessageBox.Show("Зміни успішно збережено");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при оновленні: " + ex.Message);
+                    }
+                }
+                else if (editedItem is Pollution pollution)
+                {
+                    try
+                    {
+                        var curr = context.Enterprises.Find(pollution.Idpollution);
+                        Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
+                        string propertyName = binding.Path.Path;//змінене поле   
+                        PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
+                        propertyInfo.SetValue(curr, editedValue);
+                        context.SaveChanges();
+                        MessageBox.Show("Зміни успішно збережено");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при оновленні: " + ex.Message);
+                    }
+                }
+                else if (editedItem is Pollutant pollutant)
+                {
+                    try
+                    {
+                        var curr = context.Enterprises.Find(pollutant.Idpollutant);
+                        Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
+                        string propertyName = binding.Path.Path;//змінене поле   
+                        PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
+                        propertyInfo.SetValue(curr, editedValue);
+                        context.SaveChanges();
+                        MessageBox.Show("Зміни успішно збережено");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при оновленні: " + ex.Message);
+                    }
+                }
+                else if (editedItem is Belonging belonging)
+                {
+                    try
+                    {
+                        var curr = context.Enterprises.Find(belonging.Idbelonging);
+                        Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
+                        string propertyName = binding.Path.Path;//змінене поле   
+                        PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
+                        propertyInfo.SetValue(curr, editedValue);
+                        context.SaveChanges();
+                        MessageBox.Show("Зміни успішно збережено");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при оновленні: " + ex.Message);
+                    }
+                }
+                else if (editedItem is Result result)
+                {
+                    try
+                    {
+                        var curr = context.Enterprises.Find(result.Idresults);
+                        Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
+                        string propertyName = binding.Path.Path;//змінене поле   
+                        PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
+                        propertyInfo.SetValue(curr, editedValue);
+                        context.SaveChanges();
+                        MessageBox.Show("Зміни успішно збережено");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при оновленні: " + ex.Message);
+                    }
+                }
+            }
+
+        }
     }
 }
     

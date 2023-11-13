@@ -1,6 +1,8 @@
 ﻿using EcoMonitoringIS.Classes;
 using EcoMonitoringIS.Models;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +25,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using Result = EcoMonitoringIS.Models.Result;
+using Type = System.Type;
 
 namespace EcoMonitoringIS.View
 {
@@ -33,12 +37,12 @@ namespace EcoMonitoringIS.View
         DataTableCollection? collection;
         Button CurBtn;
         DataTable changedData;
-        EcomonitoringdbContext context;
+        //EcomonitoringdbContext context;
 
         public Page1()
         {
             InitializeComponent();
-            context = new EcomonitoringdbContext();
+            //context = new EcomonitoringdbContext();
         }
 
         private void EnterprisesTable_Click(object sender, RoutedEventArgs e)
@@ -57,10 +61,7 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Вид діяльності", "Activity");
                 DBGridControl.AddColumn(DBGrid, "Належність", "Belonging.Name");
                 DBGridControl.AddColumn(DBGrid, "Адреса", "Addres");
-                CleanCellEditEnding();
-                DBGrid.CellEditEnding += DBGrid_CellEditEndingEnterprises;
             }
-            //DBGrid.CellEditEnding += DBGrid_CellEditEndingEnterprises;
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
         }
@@ -81,8 +82,6 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Викидив(т/рік)", "ValueMfr");
                 DBGridControl.AddColumn(DBGrid, "(%)від заг. викидів", "Percent");
                 DBGridControl.AddColumn(DBGrid, "Рік", "Year");
-                CleanCellEditEnding();
-                DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutions;
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutions;
             ChooseT.Text = ((Button)sender).Content.ToString();
@@ -101,8 +100,6 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Клас небезпеки", "DangerClass");
                 DBGridControl.AddColumn(DBGrid, "Граничнодопустимі\n викиди (мг/м3)", "Gdk");
                 DBGridControl.AddColumn(DBGrid, "Величина масової\n витрати (г/год)", "Mfr");
-                CleanCellEditEnding();
-                DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutants;
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutants;
             ChooseT.Text = ((Button)sender).Content.ToString();
@@ -117,8 +114,7 @@ namespace EcoMonitoringIS.View
                 DBGrid.ItemsSource = context.Belongings.ToList();
                 DBGridControl.AddColumn(DBGrid, "id", "Idbelonging");
                 DBGridControl.AddColumn(DBGrid, "Відомча належність", "Name");
-                CleanCellEditEnding();
-                DBGrid.CellEditEnding += DBGrid_CellEditEndingBelongings;
+
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingBelongings;
             ChooseT.Text = ((Button)sender).Content.ToString();
@@ -134,22 +130,12 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "id", "Idresults");
                 DBGridControl.AddColumn(DBGrid, "Перевищення", "Exceeding");
                 DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
-                CleanCellEditEnding();
-                DBGrid.CellEditEnding += DBGrid_CellEditEndingResults;
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingResults;
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
         }
 
-        private void CleanCellEditEnding()
-        {
-            DBGrid.CellEditEnding -= DBGrid_CellEditEndingEnterprises;
-            DBGrid.CellEditEnding -= DBGrid_CellEditEndingPollutions;
-            DBGrid.CellEditEnding -= DBGrid_CellEditEndingPollutants;
-            DBGrid.CellEditEnding -= DBGrid_CellEditEndingBelongings;
-            DBGrid.CellEditEnding -= DBGrid_CellEditEndingResults;
-        }
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             if (CurBtn != null)
@@ -159,382 +145,11 @@ namespace EcoMonitoringIS.View
         }
 
 
-        private void DBGrid_CellEditEndingEnterprises(object sender, DataGridCellEditEndingEventArgs e)
+        private void DBGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            var dataGrid = (DataGrid)sender;
             var editedItem = e.Row.Item;
+            DataControl.updateRow(e, editedItem);
 
-            using (var context = new EcomonitoringdbContext())
-            {
-
-                if (editedItem is Enterprise enterprise)
-                {
-                    try
-                    {
-                        context.Remove(enterprise);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Сталася помилка при видаленні Enterprise : " + ex.Message);
-                    }
-
-                }
-                else if (editedItem is Pollution pollution)
-                {
-                    try
-                    {
-                        context.Remove(pollution);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Сталася помилка при видаленні Pollution: " + ex.Message);
-                    }
-                }
-                else if (editedItem is Pollutant pollutant)
-                {
-                    try
-                    {
-                        context.Remove(pollutant);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Сталася помилка при видаленні Pollutant: " + ex.Message);
-                    }
-
-                }
-                else if (editedItem is Belonging belonging)
-                {
-                    try
-                    {
-                        context.Remove(belonging);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Сталася помилка при видаленні Belonging: " + ex.Message);
-                    }
-
-                }
-                else if (editedItem is Result result)
-                {
-                    try
-                    {
-                        context.Remove(result);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Сталася помилка при видаленні Result: " + ex.Message);
-                    }
-
-                    //var dataGrid = (DataGrid)sender;
-                    //var editedItem = e.Row.Item;
-
-                    //if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
-                    //{
-                    //    var newPropertyName = column.SortMemberPath;// Назва властивості
-                    //    var editingElement = e.EditingElement as TextBox;
-
-                    //    if (editingElement != null)
-                    //    {
-                    //        var NewValue = editingElement.Text;// Нове значення                   
-                    //        Enterprise? Ent = context.Enterprises.FirstOrDefault(en => en == editedItem);
-                    //        if (newPropertyName.Equals("Name"))
-                    //        {
-                    //            Ent.Name = NewValue;
-                    //        }
-                    //        else if (newPropertyName.Equals("Activity"))
-                    //        {
-                    //            Ent.Activity = NewValue;
-                    //        }
-                    //        else if (newPropertyName.Equals("Belonging.Name"))
-                    //        {
-                    //            Belonging? test;
-                    //            test = context.Belongings.FirstOrDefault(b => b.Name.Equals(NewValue));
-                    //            if (test != null)
-                    //            {
-                    //                Ent.Belonging = test;
-                    //            }
-                    //            else
-                    //            {
-                    //                MessageBox.Show("Значення не має відповідника\nв таблиці Belongings");
-                    //            }
-                    //        }
-                    //        else if (newPropertyName.Equals("Addres"))
-                    //        {
-                    //            Ent.Addres = NewValue;
-                    //        }
-                    //        else
-                    //        {
-                    //            MessageBox.Show("Параметр неможливо змінити");
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        // Обробка помилки: якщо editingElement має значення null
-                    //        MessageBox.Show(" editingElement має значення null");
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
-                    //    MessageBox.Show("12 editedItem не було успішно отримано \nабо поточна колонка не є DataGridBoundColumn");
-                    //}
-
-                }
-
-        private void DBGrid_CellEditEndingPollutions(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            var dataGrid = (DataGrid)sender;
-            var editedItem = e.Row.Item;
-
-            if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
-            {
-                var newPropertyName = column.SortMemberPath;// Назва властивості
-                var editingElement = e.EditingElement as TextBox;
-
-                if (editingElement != null)
-                {
-                    var NewValue = editingElement.Text;// Нове значення                   
-                    Pollution? obj = context.Pollutions.FirstOrDefault(po => po == editedItem);
-                    if (newPropertyName.Equals("Enterprise.Name"))
-                    {
-                        Enterprise test = context.Enterprises.FirstOrDefault(en => en.Name.Equals(NewValue));
-                        if (test != null)
-                        {
-                            obj.Enterprise = test;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення не має відповідника\nв таблиці Enterprise");
-                        }
-                    }
-                    else if (newPropertyName.Equals("Pollutant.Name"))
-                    {
-                        Pollutant? test = context.Pollutants.FirstOrDefault(po => po.Name.Equals(NewValue));
-                        if (test != null)
-                        {
-                            obj.Pollutant = test;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення не має відповідника\nв таблиці Pollutant");
-                        }
-                    }
-                    else if (newPropertyName.Equals("ValueMfr"))
-                    {
-                        NewValue = NewValue.Replace('.', ',');
-                        if (double.TryParse(NewValue, out double parsedValue))
-                        {
-                            obj.ValueMfr = parsedValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення має невірний тип (це не число)");
-                        }
-                    }
-                    else if (newPropertyName.Equals("Percent"))
-                    {
-                        NewValue = NewValue.Replace('.', ',');
-                        if (double.TryParse(NewValue, out double parsedValue))
-                        {
-                            obj.Percent = parsedValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення має невірний тип (це не число)");
-                        }
-                    }
-                    else if (newPropertyName.Equals("Year"))
-                    {
-                        if (int.TryParse(NewValue, out int parsedValue))
-                        {
-                            obj.Year = parsedValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення має невірний тип (це не ціле число)");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Параметр неможливо змінити");
-                    }
-                }
-                else
-                {
-                    // Обробка помилки: якщо editingElement має значення null
-                }
-            }
-            else
-            {
-                // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
-            }
-        }
-
-        private void DBGrid_CellEditEndingPollutants(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            var dataGrid = (DataGrid)sender;
-            var editedItem = e.Row.Item;
-
-            if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
-            {
-                var newPropertyName = column.SortMemberPath;// Назва властивості
-                var editingElement = e.EditingElement as TextBox;
-
-                if (editingElement != null)
-                {
-
-                    var NewValue = editingElement.Text;// Нове значення                   
-                    Pollutant? obj = context.Pollutants.FirstOrDefault(pl => pl == editedItem);
-                    if (newPropertyName.Equals("Name"))
-                    {
-                        obj.Name = NewValue;
-                    }
-                    else if (newPropertyName.Equals("DangerClass"))
-                    {
-                        if (int.TryParse(NewValue, out int parsedValue))
-                        {
-                            obj.DangerClass = parsedValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення має невірний тип (це не ціле число)");
-                        }
-                    }
-                    else if (newPropertyName.Equals("Gdk"))
-                    {
-                        NewValue = NewValue.Replace('.', ',');
-                        if (double.TryParse(NewValue, out double parsedValue))
-                        {
-                            obj.Gdk = parsedValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення має невірний тип (це не число)");
-                        }
-                    }
-                    else if (newPropertyName.Equals("Mfr"))
-                    {
-                        NewValue = NewValue.Replace('.', ',');
-                        if (double.TryParse(NewValue, out double parsedValue))
-                        {
-                            obj.Mfr = parsedValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення має невірний тип (це не число)");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Параметр неможливо змінити");
-                    }
-                }
-                else
-                {
-                    // Обробка помилки: якщо editingElement має значення null
-                }
-            }
-            else
-            {
-                // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
-            }
-        }
-
-        private void DBGrid_CellEditEndingBelongings(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            var dataGrid = (DataGrid)sender;
-            var editedItem = e.Row.Item;
-
-            if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
-            {
-                var newPropertyName = column.SortMemberPath;// Назва властивості
-                var editingElement = e.EditingElement as TextBox;
-
-                if (editingElement != null)
-                {
-                    var NewValue = editingElement.Text;// Нове значення                   
-                    Belonging? obj = context.Belongings.FirstOrDefault(b => b == editedItem);
-                    if (newPropertyName.Equals("Name"))
-                    {
-                        obj.Name = NewValue;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Параметр неможливо змінити");
-                    }
-                }
-                else
-                {
-                    // Обробка помилки: якщо editingElement має значення null
-                }
-            }
-            else
-            {
-                // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
-            }
-        }
-
-        private void DBGrid_CellEditEndingResults(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            var dataGrid = (DataGrid)sender;
-            var editedItem = e.Row.Item;
-
-            if (editedItem != null && dataGrid.CurrentColumn is DataGridBoundColumn column)
-            {
-                var newPropertyName = column.SortMemberPath;// Назва властивості
-                var editingElement = e.EditingElement as TextBox;
-
-                if (editingElement != null)
-                {
-                    DBGridControl.AddColumn(DBGrid, "id", "Idresults");
-                    DBGridControl.AddColumn(DBGrid, "Перевищення", "Exceeding");
-                    DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
-
-                    var NewValue = editingElement.Text;// Нове значення                   
-                    Result obj = context.Results.FirstOrDefault(r => r == editedItem);
-                    if (newPropertyName.Equals("PollutionId"))
-                    {
-                        if (int.TryParse(NewValue, out int parsedValue))
-                        {
-                            obj.PollutionId = parsedValue;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Значення має невірний тип (це не ціле число)");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Параметр неможливо змінити");
-                    }
-                }
-                else
-                {
-                    // Обробка помилки: якщо editingElement має значення null
-                }
-            }
-            else
-            {
-                // Обробка помилки: якщо editedItem не було успішно отримано або поточна колонка не є DataGridBoundColumn
-            }
-        }
-
-        private void SaveChangeButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                context.SaveChanges();
-                MessageBox.Show("Зміни успішно збережено");
-                if (CurBtn != null)
-                {
-                    CurBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                }
-            }
-            catch (Exception ex)
-            {
-                // Обробка винятку
-                MessageBox.Show("Сталася помилка: " + ex.Message);
-            }
         }
 
         private void DelButton_Click(object sender, RoutedEventArgs e)
@@ -556,6 +171,5 @@ namespace EcoMonitoringIS.View
                 MessageBox.Show("Будь ласка, виділіть рядок, який ви хочете видалити.");
             }
         }
-
     }
 }
