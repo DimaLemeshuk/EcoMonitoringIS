@@ -131,7 +131,7 @@ public partial class EcomonitoringdbContext : DbContext
             entity.HasIndex(e => e.PollutionId, "pollution_id_UNIQUE").IsUnique();
 
             entity.Property(e => e.Idresults).HasColumnName("idresults");
-            entity.Property(e => e.Exceeding).HasColumnName("exceeding");
+            entity.Property(e => e.CR).HasColumnName("CR");
             entity.Property(e => e.PollutionId).HasColumnName("pollution_id");
 
             entity.HasOne(d => d.Pollution).WithOne(p => p.Result)

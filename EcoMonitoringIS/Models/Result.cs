@@ -7,7 +7,7 @@ public partial class Result
 {
     public int Idresults { get; set; }
 
-    public double Exceeding { get; set; }
+    public double CR { get; set; }
 
     public int PollutionId { get; set; }
 
