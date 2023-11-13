@@ -104,7 +104,7 @@ namespace EcoMonitoringIS.Classes
                         Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
                         string propertyName = binding.Path.Path;//змінене поле   
                         PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
-                        propertyInfo.SetValue(curr, editedValue);
+                        propertyInfo.SetValue(curr, ConvertToNumberOrString(editedValue));
                         context.SaveChanges();
                         MessageBox.Show("Зміни успішно збережено");
 
@@ -118,11 +118,11 @@ namespace EcoMonitoringIS.Classes
                 {
                     try
                     {
-                        var curr = context.Enterprises.Find(pollution.Idpollution);
+                        var curr = context.Pollutions.Find(pollution.Idpollution);
                         Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
                         string propertyName = binding.Path.Path;//змінене поле   
                         PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
-                        propertyInfo.SetValue(curr, editedValue);
+                        propertyInfo.SetValue(curr, ConvertToNumberOrString(editedValue));
                         context.SaveChanges();
                         MessageBox.Show("Зміни успішно збережено");
 
@@ -136,11 +136,11 @@ namespace EcoMonitoringIS.Classes
                 {
                     try
                     {
-                        var curr = context.Enterprises.Find(pollutant.Idpollutant);
+                        var curr = context.Pollutants.Find(pollutant.Idpollutant);
                         Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
                         string propertyName = binding.Path.Path;//змінене поле   
                         PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
-                        propertyInfo.SetValue(curr, editedValue);
+                        propertyInfo.SetValue(curr, ConvertToNumberOrString(editedValue));
                         context.SaveChanges();
                         MessageBox.Show("Зміни успішно збережено");
 
@@ -154,11 +154,11 @@ namespace EcoMonitoringIS.Classes
                 {
                     try
                     {
-                        var curr = context.Enterprises.Find(belonging.Idbelonging);
+                        var curr = context.Belongings.Find(belonging.Idbelonging);
                         Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
                         string propertyName = binding.Path.Path;//змінене поле   
                         PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
-                        propertyInfo.SetValue(curr, editedValue);
+                        propertyInfo.SetValue(curr, ConvertToNumberOrString(editedValue));
                         context.SaveChanges();
                         MessageBox.Show("Зміни успішно збережено");
 
@@ -172,11 +172,11 @@ namespace EcoMonitoringIS.Classes
                 {
                     try
                     {
-                        var curr = context.Enterprises.Find(result.Idresults);
+                        var curr = context.Results.Find(result.Idresults);
                         Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
                         string propertyName = binding.Path.Path;//змінене поле   
                         PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
-                        propertyInfo.SetValue(curr, editedValue);
+                        propertyInfo.SetValue(curr, ConvertToNumberOrString(editedValue));
                         context.SaveChanges();
                         MessageBox.Show("Зміни успішно збережено");
 
@@ -188,6 +188,24 @@ namespace EcoMonitoringIS.Classes
                 }
             }
 
+        }
+
+        public static object ConvertToNumberOrString(string input)
+        {
+
+            if (int.TryParse(input, out int intValue))
+            {
+                return intValue;
+            }
+
+            input = input.Replace('.', ',');
+            if (double.TryParse(input, out double doubleValue))
+            {
+                return doubleValue;
+            }
+
+            // Якщо конвертація в int не вдалася, повернемо вихідну строку
+            return input;
         }
     }
 }

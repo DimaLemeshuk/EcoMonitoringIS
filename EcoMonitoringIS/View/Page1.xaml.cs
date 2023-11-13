@@ -136,19 +136,11 @@ namespace EcoMonitoringIS.View
             CurBtn = (Button)sender;
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (CurBtn != null)
-            {
-                CurBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-            }
-        }
-
-
         private void DBGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             var editedItem = e.Row.Item;
             DataControl.updateRow(e, editedItem);
+            //Refresh();
 
         }
 
@@ -169,6 +161,14 @@ namespace EcoMonitoringIS.View
             else
             {
                 MessageBox.Show("Будь ласка, виділіть рядок, який ви хочете видалити.");
+            }
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurBtn != null)
+            {
+                CurBtn.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             }
         }
     }
