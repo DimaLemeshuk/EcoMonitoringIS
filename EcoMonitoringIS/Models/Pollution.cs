@@ -32,8 +32,6 @@ public partial class Pollution
     {
         using (var context = new EcomonitoringdbContext())
         {
-            //try
-            //{
                 var e = context.Enterprises.FirstOrDefault(e => e.Name == Enterprise);
                 var p = context.Pollutants.FirstOrDefault(p => p.Name == Pollutant);
                 EnterpriseId = e.Identerprise;
@@ -41,11 +39,6 @@ public partial class Pollution
                 ValueMfr = valueMfr;
                 Percent = percent;
                 Year = year;
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Сталася помилка: " + ex.Message);
-            //}
         }
     }
 }

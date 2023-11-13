@@ -21,19 +21,6 @@ public partial class Enterprise
 
     public virtual ICollection<Pollution> Pollutions { get; set; } = new List<Pollution>();
 
-    //public Enterprise(string Name, string Activity, string BelongingName, string Addres)
-    //{
-    //    using (var context = new EcomonitoringdbContext())
-    //    {
-    //        var b = context.Belongings.FirstOrDefault(e => e.Name == BelongingName);
-    //        this.Name = Name;
-    //        this.Activity = Activity;   
-    //        this.BelongingId = b.Idbelonging; 
-    //        this.Addres = Addres;   
-    //        Belonging = b;
-    //    }
-    //}
-
     public Enterprise()
     {
         // Конструктор залишається пустим
@@ -56,7 +43,6 @@ public partial class Enterprise
             this.Activity = Activity;
             this.BelongingId = b.Idbelonging;
             this.Addres = Addres;
-            //Belonging = b;
         }
     }
 }
