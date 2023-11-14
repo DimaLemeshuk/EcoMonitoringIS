@@ -16,6 +16,8 @@ public partial class Pollutant
 
     public double Mfr { get; set; }
 
+    public double SF { get; set; }
+
     public virtual ICollection<Pollution> Pollutions { get; set; } = new List<Pollution>();
 
     public Pollutant()

@@ -18,6 +18,7 @@ public partial class Pollution
     public double? Percent { get; set; }
 
     public int Year { get; set; }
+    public double Concentration { get; set; }
 
     public virtual Enterprise Enterprise { get; set; } = null!;
 

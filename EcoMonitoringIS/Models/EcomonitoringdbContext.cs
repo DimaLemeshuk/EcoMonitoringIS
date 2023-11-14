@@ -84,6 +84,7 @@ public partial class EcomonitoringdbContext : DbContext
             entity.Property(e => e.DangerClass).HasColumnName("danger_class");
             entity.Property(e => e.Gdk).HasColumnName("gdk");
             entity.Property(e => e.Mfr).HasColumnName("mfr");
+            entity.Property(e => e.SF).HasColumnName("SF");
             entity.Property(e => e.Name)
                 .HasMaxLength(300)
                 .HasColumnName("name");
@@ -100,16 +101,13 @@ public partial class EcomonitoringdbContext : DbContext
             entity.HasIndex(e => e.PollutantId, "poll_id_idx");
 
             entity.Property(e => e.Idpollution).HasColumnName("idpollution");
-            ////------
             entity.Property(e => e.Year);
-            ////---------
-            //entity.Property(e => e.Date)
-            //    .HasColumnType("date")
-            //    .HasColumnName("date");
+
             entity.Property(e => e.EnterpriseId).HasColumnName("enterprise_id");
             entity.Property(e => e.Percent).HasColumnName("percent");
             entity.Property(e => e.PollutantId).HasColumnName("pollutant_id");
             entity.Property(e => e.ValueMfr).HasColumnName("value_mfr");
+            entity.Property(e => e.Concentration).HasColumnName("concentration");
 
             entity.HasOne(d => d.Enterprise).WithMany(p => p.Pollutions)
                 .HasForeignKey(d => d.EnterpriseId)
@@ -132,7 +130,18 @@ public partial class EcomonitoringdbContext : DbContext
 
             entity.Property(e => e.Idresults).HasColumnName("idresults");
             entity.Property(e => e.CR).HasColumnName("CR");
+            entity.Property(e => e.LADD).HasColumnName("LADD");
             entity.Property(e => e.PollutionId).HasColumnName("pollution_id");
+            entity.Property(e => e.Ca).HasColumnName("Ca");
+            entity.Property(e => e.Ch).HasColumnName("Ch");
+            entity.Property(e => e.Tout).HasColumnName("Tout");
+            entity.Property(e => e.Tin).HasColumnName("Tin");
+            entity.Property(e => e.Vout).HasColumnName("Vout");
+            entity.Property(e => e.Vin).HasColumnName("Vin");
+            entity.Property(e => e.EF).HasColumnName("EF");
+            entity.Property(e => e.ED).HasColumnName("ED");
+            entity.Property(e => e.BW).HasColumnName("BW");
+            entity.Property(e => e.AT).HasColumnName("AT");
 
             entity.HasOne(d => d.Pollution).WithOne(p => p.Result)
                 .HasForeignKey<Result>(d => d.PollutionId)
