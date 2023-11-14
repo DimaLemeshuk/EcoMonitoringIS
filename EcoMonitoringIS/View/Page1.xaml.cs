@@ -82,6 +82,8 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Викидив(т/рік)", "ValueMfr");
                 DBGridControl.AddColumn(DBGrid, "(%)від заг. викидів", "Percent");
                 DBGridControl.AddColumn(DBGrid, "Рік", "Year");
+                DBGridControl.AddColumn(DBGrid, "Концентрація(мг/м3)", "Concentration");
+
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutions;
             ChooseT.Text = ((Button)sender).Content.ToString();
@@ -100,6 +102,8 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Клас небезпеки", "DangerClass");
                 DBGridControl.AddColumn(DBGrid, "Граничнодопустимі\n викиди (мг/м3)", "Gdk");
                 DBGridControl.AddColumn(DBGrid, "Величина масової\n витрати (г/год)", "Mfr");
+                DBGridControl.AddColumn(DBGrid, "SFi(\n(мг/(кг*доба)^(-1)", "SF");
+
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutants;
             ChooseT.Text = ((Button)sender).Content.ToString();
@@ -128,10 +132,24 @@ namespace EcoMonitoringIS.View
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Results.ToList();
                 DBGridControl.AddColumn(DBGrid, "id", "Idresults");
-                DBGridControl.AddColumn(DBGrid, "Перевищення", "Exceeding");
+                DBGridControl.AddColumn(DBGrid, "величина  індивідуального\nризику", "CR");
+                DBGridControl.AddColumn(DBGrid, "Величина надходження\nмг/кг-доба", "LADD");             
+
                 DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
+
+                DBGridControl.AddColumn(DBGrid, "Концентрація реч. в приміщенні\nмг/куб.м ", "Ch");
+                DBGridControl.AddColumn(DBGrid, "Час поза приміщенням\nгод/доба", "Tout");
+                DBGridControl.AddColumn(DBGrid, "Час всередині приміщення\nгод/доба", "Tin");
+                DBGridControl.AddColumn(DBGrid, "Шв. дих. поза приміщенням\nкуб.м/год", "Vout");
+                DBGridControl.AddColumn(DBGrid, "Шв. дих. в середині приміщення\nкуб.м/год", "Vin");
+                DBGridControl.AddColumn(DBGrid, "Частота впливу\nднів/рік", "EF");
+                DBGridControl.AddColumn(DBGrid, "Тривалість впливу\nроків", "ED");
+                DBGridControl.AddColumn(DBGrid, "Маса тіла\nкг", "BW");
+                DBGridControl.AddColumn(DBGrid, "Осереднення експозиції\nроків", "AT");
+
             }
-            //DBGrid.CellEditEnding += DBGrid_CellEditEndingResults;
+
+
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
         }

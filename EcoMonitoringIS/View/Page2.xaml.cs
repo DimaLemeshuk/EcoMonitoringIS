@@ -69,6 +69,7 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Викидив(т/рік)", "ValueMfr");
                 DBGridControl.AddColumn(DBGrid, "(%)від заг. викидів", "Percent");
                 DBGridControl.AddColumn(DBGrid, "Рік", "Year");
+                DBGridControl.AddColumn(DBGrid, "Концентрація(мг/м3)", "Concentration");
 
             }
             ChooseT.Text = ((Button)sender).Content.ToString();
@@ -87,6 +88,7 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Клас небезпеки", "DangerClass");
                 DBGridControl.AddColumn(DBGrid, "Граничнодопустимі\n викиди (мг/м3)", "Gdk");
                 DBGridControl.AddColumn(DBGrid, "Величина масової\n витрати (г/год)", "Mfr");
+                DBGridControl.AddColumn(DBGrid, "SFi(\n(мг/(кг*доба)^(-1)", "SF");
             }
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
@@ -112,8 +114,20 @@ namespace EcoMonitoringIS.View
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Results.ToList();
                 DBGridControl.AddColumn(DBGrid, "id", "Idresults");
-                DBGridControl.AddColumn(DBGrid, "Перевищення", "Exceeding");
+                DBGridControl.AddColumn(DBGrid, "величина  індивідуального\nризику", "CR");
+                DBGridControl.AddColumn(DBGrid, "Величина надходження\nмг/кг-доба", "LADD");
+
                 DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
+
+                DBGridControl.AddColumn(DBGrid, "Концентрація реч. в приміщенні\nмг/куб.м ", "Ch");
+                DBGridControl.AddColumn(DBGrid, "Час поза приміщенням\nгод/доба", "Tout");
+                DBGridControl.AddColumn(DBGrid, "Час всередині приміщення\nгод/доба", "Tin");
+                DBGridControl.AddColumn(DBGrid, "Шв. дих. поза приміщенням\nкуб.м/год", "Vout");
+                DBGridControl.AddColumn(DBGrid, "Шв. дих. в середині приміщення\nкуб.м/год", "Vin");
+                DBGridControl.AddColumn(DBGrid, "Частота впливу\nднів/рік", "EF");
+                DBGridControl.AddColumn(DBGrid, "Тривалість впливу\nроків", "ED");
+                DBGridControl.AddColumn(DBGrid, "Маса тіла\nкг", "BW");
+                DBGridControl.AddColumn(DBGrid, "Осереднення експозиції\nроків", "AT");
             }
             ChooseT.Text = ((Button)sender).Content.ToString();
             CurBtn = (Button)sender;
@@ -210,8 +224,9 @@ namespace EcoMonitoringIS.View
                             double ValueMFR = (double)table.Rows[i][1];
                             double Percent = (double)table.Rows[i][2];
                             int year = Int32.Parse(table.Rows[i][3].ToString());
+                            double con = double.Parse(table.Rows[i][4].ToString());
                             var p = new Pollution();
-                            p.Initialize(enterpriseName, pollutantName, ValueMFR, Percent, year);
+                            p.Initialize(enterpriseName, pollutantName, ValueMFR, Percent, year, con);
                             db.Pollutions.Add(p);
                         }
                         
@@ -239,7 +254,7 @@ namespace EcoMonitoringIS.View
                     var b = Int32.Parse(row[1].ToString());
                     var c = (double)row[2];
                     var d = (double)row[3];
-                        db.Pollutants.Add(new Pollutant(row[0].ToString(), Int32.Parse(row[1].ToString()), (double)row[2], (double)row[3]));
+                        db.Pollutants.Add(new Pollutant(row[0].ToString(), Int32.Parse(row[1].ToString()), (double)row[2], (double)row[3], (double)row[4]));
                     }
                     db.SaveChanges();
                     MessageBox.Show("Дані успішно додано");

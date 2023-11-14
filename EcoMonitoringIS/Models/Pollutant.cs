@@ -22,12 +22,13 @@ public partial class Pollutant
 
     public Pollutant()
     { }
-    public Pollutant(string Name, int danger_class, double gdk, double mfr)
+    public Pollutant(string Name, int danger_class, double gdk, double mfr, double sf)
     {
         this.Name = Name;   
         this.DangerClass = danger_class;    
         this.Gdk = gdk;
         this.Mfr = mfr;
+        this.SF = sf;
     }
 
 }

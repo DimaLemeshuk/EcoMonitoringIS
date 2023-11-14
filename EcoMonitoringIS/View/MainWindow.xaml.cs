@@ -44,5 +44,10 @@ namespace EcoMonitoringIS.View
         {
             MainFrame.Content = new Page3();
         }
+
+        private void Page4Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = new Page4();
+        }
     }
 }

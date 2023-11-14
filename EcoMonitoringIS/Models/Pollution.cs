@@ -29,7 +29,7 @@ public partial class Pollution
     public Pollution()
     { }
 
-    public void Initialize(string Enterprise, string Pollutant, double valueMfr, double? percent, int year)
+    public void Initialize(string Enterprise, string Pollutant, double valueMfr, double? percent, int year, double concentration)
     {
         using (var context = new EcomonitoringdbContext())
         {
@@ -40,6 +40,7 @@ public partial class Pollution
                 ValueMfr = valueMfr;
                 Percent = percent;
                 Year = year;
+                Concentration = concentration;
         }
     }
 }

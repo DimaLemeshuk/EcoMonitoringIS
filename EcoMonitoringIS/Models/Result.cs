@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 
 namespace EcoMonitoringIS.Models;
@@ -10,17 +11,17 @@ public partial class Result
     public double CR { get; private set; }
     public double LADD { get; private set; }
     public int _pollutionId;
-    private double _ca;
-    private double _ch;
-    private double _tout;
-    private double _tin;
-    private double _vout;
-    private double _vin;
-    private double _ef;
-    private double _ed;
-    private double _bw;
-    private double _at;
-    private Pollution? _pollution;
+    private double _ca = 0.00000095;
+    private double _ch = 1.0 * 0.00000095;
+    private double _tout = 8;
+    private double _tin = 16;
+    private double _vout = 1.4;
+    private double _vin = 0.63;
+    private double _ef = 350;
+    private double _ed = 30;
+    private double _bw = 70;
+    private double _at = 70;
+    private Pollution _pollution;
 
     public int PollutionId
     {
@@ -140,6 +141,24 @@ public partial class Result
             Pollution = value;
             CalculateCR();
         }
+    }
+    public Result()
+    { }
+    public Result(Pollution p)
+    {
+        this.Pollution = p;
+        this.PollutionId = p.Idpollution;
+        Ca = 0.00000095;
+        Ch = 1.0 * 0.00000095;
+        Tout = 8;
+        Tin = 16;
+        Vout = 1.4;
+        Vin = 0.63;
+        EF = 350;
+        ED = 30;
+        BW = 70;
+        AT = 70;
+        this.CalculateCR();
     }
 
     private void CalculateCR()
