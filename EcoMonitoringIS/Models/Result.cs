@@ -8,19 +8,21 @@ public partial class Result
 {
     public int Idresults { get; private set; }
 
+    public double PCR { get; private set; }
     public double CR { get; private set; }
     public double LADD { get; private set; }
+    public double POP { get; set; }
     public int _pollutionId;
-    private double _ca = 0.00000095;
-    private double _ch = 1.0 * 0.00000095;
-    private double _tout = 8;
-    private double _tin = 16;
-    private double _vout = 1.4;
-    private double _vin = 0.63;
-    private double _ef = 350;
-    private double _ed = 30;
-    private double _bw = 70;
-    private double _at = 70;
+    private double _ca;
+    private double _ch;
+    private double _tout;
+    private double _tin;
+    private double _vout;
+    private double _vin;
+    private double _ef;
+    private double _ed;
+    private double _bw;
+    private double _at;
     private Pollution _pollution;
 
     public int PollutionId
@@ -29,7 +31,7 @@ public partial class Result
         set
         {
             _pollutionId = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -39,7 +41,7 @@ public partial class Result
         set
         {
             _ca = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -49,7 +51,7 @@ public partial class Result
         set
         {
             _ch = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -59,7 +61,7 @@ public partial class Result
         set
         {
             _tout = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -69,7 +71,7 @@ public partial class Result
         set
         {
             _tin = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -79,7 +81,7 @@ public partial class Result
         set
         {
             _vout = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -89,7 +91,7 @@ public partial class Result
         set
         {
             _vin = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -99,7 +101,7 @@ public partial class Result
         set
         {
             _ef = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -109,7 +111,7 @@ public partial class Result
         set
         {
             _ed = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -119,7 +121,7 @@ public partial class Result
         set
         {
             _bw = value;
-            CalculateCR();
+           //alculateCR();
         }
     }
 
@@ -129,7 +131,7 @@ public partial class Result
         set
         {
             _at = value;
-            CalculateCR();
+            //CalculateCR();
         }
     }
 
@@ -138,8 +140,14 @@ public partial class Result
         get { return _pollution; }
         set
         {
-            Pollution = value;
-            CalculateCR();
+            //using( var contex = new EcomonitoringdbContext())
+            //{
+            //    var p = contex.Pollutions.Find(value.Idpollution);
+            //    Pollution = p;
+
+            //}
+            _pollution = value;
+            //CalculateCR();
         }
     }
     public Result()
@@ -158,15 +166,20 @@ public partial class Result
         ED = 30;
         BW = 70;
         AT = 70;
-        this.CalculateCR();
+        POP = 10000;
+        this.CalculateCR(this.PollutionId);
     }
 
-    private void CalculateCR()
+    public void CalculateCR(int id_Pollution)
     {
         using (var context = new EcomonitoringdbContext())
         {
-            LADD = ((Pollution.Concentration * Tout * Vout) + (Ch * Tin * Vin)) * EF * ED / (BW * AT * 365);
-            CR = LADD * Pollution.Pollutant.SF;
+            Pollution poll = context.Pollutions.Find(id_Pollution);
+            LADD = ((poll.Concentration * Tout * Vout) + (Ch * Tin * Vin)) * EF * ED / (BW * AT * 365);
+            double SF = context.Pollutants.Find(poll.PollutantId).SF;
+            CR = LADD * SF;
+            PCR = CR * POP;
+            context.SaveChanges();
         }
     }
 }

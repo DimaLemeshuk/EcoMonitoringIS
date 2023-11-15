@@ -22,6 +22,18 @@ namespace EcoMonitoringIS.Classes
             });
 
         }
+        public static void AddColumn(DataGrid DBGrid, string newName, string PropertyName, bool ReadOnly)
+        {
+
+            DBGrid.AutoGenerateColumns = false;
+            DBGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = newName,
+                Binding = new Binding(PropertyName),
+                IsReadOnly = ReadOnly
+            });
+
+        }
 
         public static void DelOllColumn(DataGrid DBGrid)
         {

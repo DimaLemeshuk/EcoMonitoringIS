@@ -70,6 +70,8 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "(%)від заг. викидів", "Percent");
                 DBGridControl.AddColumn(DBGrid, "Рік", "Year");
                 DBGridControl.AddColumn(DBGrid, "Концентрація(мг/м3)", "Concentration");
+                DBGridControl.AddColumn(DBGrid, "Коефіцієнт небезпеки", "HQ");
+
 
             }
             ChooseT.Text = ((Button)sender).Content.ToString();

@@ -177,6 +177,7 @@ namespace EcoMonitoringIS.Classes
                         string propertyName = binding.Path.Path;//змінене поле   
                         PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
                         propertyInfo.SetValue(curr, ConvertToNumberOrString(editedValue));
+                        curr.CalculateCR(curr.PollutionId);
                         context.SaveChanges();
                         MessageBox.Show("Зміни успішно збережено");
 

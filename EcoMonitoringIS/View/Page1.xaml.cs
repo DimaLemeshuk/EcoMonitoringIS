@@ -42,7 +42,6 @@ namespace EcoMonitoringIS.View
         public Page1()
         {
             InitializeComponent();
-            //context = new EcomonitoringdbContext();
         }
 
         private void EnterprisesTable_Click(object sender, RoutedEventArgs e)
@@ -56,7 +55,7 @@ namespace EcoMonitoringIS.View
                     .Include(e => e.Belonging)
                     .ToList();
 
-                DBGridControl.AddColumn(DBGrid, "id", "Identerprise");
+                DBGridControl.AddColumn(DBGrid, "id", "Identerprise", true);
                 DBGridControl.AddColumn(DBGrid, "Назва", "Name");
                 DBGridControl.AddColumn(DBGrid, "Вид діяльності", "Activity");
                 DBGridControl.AddColumn(DBGrid, "Належність", "Belonging.Name");
@@ -76,13 +75,16 @@ namespace EcoMonitoringIS.View
                 .ToList();
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Pollutions.ToList();
-                DBGridControl.AddColumn(DBGrid, "id", "Idpollution");
+                DBGridControl.AddColumn(DBGrid, "id", "Idpollution", true);
                 DBGridControl.AddColumn(DBGrid, "Підприємство", "Enterprise.Name");
                 DBGridControl.AddColumn(DBGrid, "Забрудник", "Pollutant.Name");
                 DBGridControl.AddColumn(DBGrid, "Викидив(т/рік)", "ValueMfr");
                 DBGridControl.AddColumn(DBGrid, "(%)від заг. викидів", "Percent");
                 DBGridControl.AddColumn(DBGrid, "Рік", "Year");
                 DBGridControl.AddColumn(DBGrid, "Концентрація(мг/м3)", "Concentration");
+                DBGridControl.AddColumn(DBGrid, "Коефіцієнт небезпеки", "HQ", true);
+                DBGridControl.AddColumn(DBGrid, "Характеристика ризику", "rating", true);
+
 
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutions;
@@ -97,7 +99,7 @@ namespace EcoMonitoringIS.View
             {
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Pollutants.ToList();
-                DBGridControl.AddColumn(DBGrid, "id", "Idpollutant");
+                DBGridControl.AddColumn(DBGrid, "id", "Idpollutant", true);
                 DBGridControl.AddColumn(DBGrid, "Назва речовини", "Name");
                 DBGridControl.AddColumn(DBGrid, "Клас небезпеки", "DangerClass");
                 DBGridControl.AddColumn(DBGrid, "Граничнодопустимі\n викиди (мг/м3)", "Gdk");
@@ -116,7 +118,7 @@ namespace EcoMonitoringIS.View
             {
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Belongings.ToList();
-                DBGridControl.AddColumn(DBGrid, "id", "Idbelonging");
+                DBGridControl.AddColumn(DBGrid, "id", "Idbelonging", true);
                 DBGridControl.AddColumn(DBGrid, "Відомча належність", "Name");
 
             }
@@ -131,11 +133,12 @@ namespace EcoMonitoringIS.View
             {
                 DBGridControl.DelOllColumn(DBGrid);
                 DBGrid.ItemsSource = context.Results.ToList();
-                DBGridControl.AddColumn(DBGrid, "id", "Idresults");
-                DBGridControl.AddColumn(DBGrid, "величина  індивідуального\nризику", "CR");
-                DBGridControl.AddColumn(DBGrid, "Величина надходження\nмг/кг-доба", "LADD");             
+                DBGridControl.AddColumn(DBGrid, "id", "Idresults", true);
+                DBGridControl.AddColumn(DBGrid, "величина  індивідуального\nризику", "PCR", true);
+                DBGridControl.AddColumn(DBGrid, "величина  індивідуального\nризику", "CR", true);
+                DBGridControl.AddColumn(DBGrid, "Величина надходження\nмг/кг-доба", "LADD", true);
 
-                DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId");
+                DBGridControl.AddColumn(DBGrid, "id забрудника", "PollutionId", true);
 
                 DBGridControl.AddColumn(DBGrid, "Концентрація реч. в приміщенні\nмг/куб.м ", "Ch");
                 DBGridControl.AddColumn(DBGrid, "Час поза приміщенням\nгод/доба", "Tout");
@@ -146,6 +149,7 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Тривалість впливу\nроків", "ED");
                 DBGridControl.AddColumn(DBGrid, "Маса тіла\nкг", "BW");
                 DBGridControl.AddColumn(DBGrid, "Осереднення експозиції\nроків", "AT");
+                DBGridControl.AddColumn(DBGrid, "Кількість  населення\nосіб", "POP");
 
             }
 

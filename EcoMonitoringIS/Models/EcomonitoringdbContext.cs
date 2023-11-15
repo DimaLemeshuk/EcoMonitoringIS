@@ -108,6 +108,11 @@ public partial class EcomonitoringdbContext : DbContext
             entity.Property(e => e.PollutantId).HasColumnName("pollutant_id");
             entity.Property(e => e.ValueMfr).HasColumnName("value_mfr");
             entity.Property(e => e.Concentration).HasColumnName("concentration");
+            entity.Property(e => e.HQ).HasColumnName("HQ");
+            entity.Property(e => e.rating)
+                .HasMaxLength(100)
+                .HasColumnName("rating");
+
 
             entity.HasOne(d => d.Enterprise).WithMany(p => p.Pollutions)
                 .HasForeignKey(d => d.EnterpriseId)
@@ -129,6 +134,7 @@ public partial class EcomonitoringdbContext : DbContext
             entity.HasIndex(e => e.PollutionId, "pollution_id_UNIQUE").IsUnique();
 
             entity.Property(e => e.Idresults).HasColumnName("idresults");
+            entity.Property(e => e.PCR).HasColumnName("PCR");
             entity.Property(e => e.CR).HasColumnName("CR");
             entity.Property(e => e.LADD).HasColumnName("LADD");
             entity.Property(e => e.PollutionId).HasColumnName("pollution_id");
@@ -142,6 +148,7 @@ public partial class EcomonitoringdbContext : DbContext
             entity.Property(e => e.ED).HasColumnName("ED");
             entity.Property(e => e.BW).HasColumnName("BW");
             entity.Property(e => e.AT).HasColumnName("AT");
+            entity.Property(e => e.POP).HasColumnName("POP");
 
             entity.HasOne(d => d.Pollution).WithOne(p => p.Result)
                 .HasForeignKey<Result>(d => d.PollutionId)

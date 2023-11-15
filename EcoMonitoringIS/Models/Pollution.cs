@@ -19,6 +19,9 @@ public partial class Pollution
 
     public int Year { get; set; }
     public double Concentration { get; set; }
+    public double HQ { get; private set; }
+    public string? rating { get; set; } = null!;
+
 
     public virtual Enterprise Enterprise { get; set; } = null!;
 
@@ -41,6 +44,27 @@ public partial class Pollution
                 Percent = percent;
                 Year = year;
                 Concentration = concentration;
+                HQ = concentration / p.Gdk;
+                rating = GetRating(HQ);
         }
+    }
+
+    public string GetRating(double HQ)
+    {
+        string rating;
+        if (HQ < 1)
+        {
+            rating = "Зневажливо малий";
+        }
+        else if (HQ > 01)
+        {
+            rating = "Високий";
+
+        }
+        else
+        {
+            rating = "Гранична величина";
+        }
+        return rating;
     }
 }

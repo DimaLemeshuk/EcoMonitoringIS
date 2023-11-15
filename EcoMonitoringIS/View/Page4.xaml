@@ -116,7 +116,7 @@
                 <Button x:Name="СalculateButton" Grid.Column="1" Content="Розрахувати" Height="30" Width="auto" Margin="0 30 30 0" HorizontalAlignment="Stretch" Click="СalculateButton_Click"/>
             </Grid>
 
-            <DataGrid x:Name="DBGrid1" Grid.Row="1" Style="{StaticResource DataGridStyle}" Margin=" 30 20 30 30">
+            <DataGrid x:Name="DBGrid1" Grid.Row="1" Style="{StaticResource DataGridStyle}" Margin=" 30 20 30 30" IsReadOnly="True">
 
             </DataGrid>
             <Button x:Name="RefreshButton1" Grid.Row ="0" Width="25" Height="25" HorizontalAlignment="Right" Margin="0 30 30 30" Grid.RowSpan="2" VerticalAlignment="Bottom" Click="RefreshButton1_Click">

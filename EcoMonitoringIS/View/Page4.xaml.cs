@@ -22,11 +22,12 @@ namespace EcoMonitoringIS.View
             {
                 DBGridControl.DelOllColumn(DBGrid2);
                 DBGrid2.ItemsSource = context.Results.ToList();
-                DBGridControl.AddColumn(DBGrid2, "id", "Idresults");
-                DBGridControl.AddColumn(DBGrid2, "величина  індивідуального\nризику", "CR");
-                DBGridControl.AddColumn(DBGrid2, "Величина надходження\nмг/кг-доба", "LADD");
+                DBGridControl.AddColumn(DBGrid2, "id", "Idresults", true);
+                DBGridControl.AddColumn(DBGrid2, "Величина  популяційного\nризику", "PCR", true);
+                DBGridControl.AddColumn(DBGrid2, "Величина  індивідуального\nризику", "CR", true);
+                DBGridControl.AddColumn(DBGrid2, "Величина надходження\nмг/кг-доба", "LADD", true);
 
-                DBGridControl.AddColumn(DBGrid2, "id забрудника", "PollutionId");
+                DBGridControl.AddColumn(DBGrid2, "id забрудника", "PollutionId", true);
 
                 DBGridControl.AddColumn(DBGrid2, "Концентрація реч. в приміщенні\nмг/куб.м ", "Ch");
                 DBGridControl.AddColumn(DBGrid2, "Час поза приміщенням\nгод/доба", "Tout");
@@ -37,6 +38,8 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid2, "Тривалість впливу\nроків", "ED");
                 DBGridControl.AddColumn(DBGrid2, "Маса тіла\nкг", "BW");
                 DBGridControl.AddColumn(DBGrid2, "Осереднення експозиції\nроків", "AT");
+                DBGridControl.AddColumn(DBGrid2, "Кількість  населення\nосіб", "POP");
+
 
                 DBGrid1.ItemsSource = context.Pollutions
                 .Include(p => p.Enterprise)
@@ -57,7 +60,16 @@ namespace EcoMonitoringIS.View
 
         private void DBGrid_CellEditEnding2(object sender, DataGridCellEditEndingEventArgs e)
         {
-
+            try
+            {
+                var editedItem = e.Row.Item;
+                DataControl.updateRow(e, editedItem);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Дані не можуть бути змінені");
+            }
+            
         }
 
         private void СalculateButton_Click(object sender, RoutedEventArgs e)
@@ -72,7 +84,16 @@ namespace EcoMonitoringIS.View
                     {
                         if(selectedItem is Pollution pollution)
                         {
-                            context.Results.Add(new Result(context.Pollutions.Find(pollution.Idpollution)));
+                            try
+                            {
+                                context.Results.Add(new Result(context.Pollutions.Find(pollution.Idpollution)));
+                                context.SaveChanges();
+                                DBGrid2.ItemsSource = context.Results.ToList();
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show("Виникла помилка:  " + ex);
+                            }
 
                         }                      
                     }
@@ -87,12 +108,21 @@ namespace EcoMonitoringIS.View
 
         private void RefreshButton1_Click(object sender, RoutedEventArgs e)
         {
-
+            using (EcomonitoringdbContext context = new EcomonitoringdbContext())
+            {
+                DBGrid1.ItemsSource = context.Pollutions
+                .Include(p => p.Enterprise)
+                .Include(p => p.Pollutant)
+                .ToList();
+            }
         }
 
         private void RefreshButton2_Click(object sender, RoutedEventArgs e)
         {
-
+            using (EcomonitoringdbContext context = new EcomonitoringdbContext())
+            {
+                DBGrid2.ItemsSource = context.Results.ToList();
+            }
         }
     }
 }
