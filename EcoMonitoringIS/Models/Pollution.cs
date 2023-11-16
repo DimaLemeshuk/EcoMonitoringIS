@@ -29,6 +29,8 @@ public partial class Pollution
 
     public virtual Result? Result { get; set; }
 
+    public ICollection<Loss> Losses { get; set; } = null!;
+
     public Pollution()
     { }
 
@@ -36,6 +38,7 @@ public partial class Pollution
     {
         using (var context = new EcomonitoringdbContext())
         {
+
                 var e = context.Enterprises.FirstOrDefault(e => e.Name == Enterprise);
                 var p = context.Pollutants.FirstOrDefault(p => p.Name == Pollutant);
                 EnterpriseId = e.Identerprise;

@@ -140,12 +140,6 @@ public partial class Result
         get { return _pollution; }
         set
         {
-            //using( var contex = new EcomonitoringdbContext())
-            //{
-            //    var p = contex.Pollutions.Find(value.Idpollution);
-            //    Pollution = p;
-
-            //}
             _pollution = value;
             //CalculateCR();
         }

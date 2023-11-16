@@ -24,6 +24,8 @@ public partial class EcomonitoringdbContext : DbContext
     public virtual DbSet<Pollution> Pollutions { get; set; }
 
     public virtual DbSet<Result> Results { get; set; }
+    public virtual DbSet<Loss> Losses { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseMySQL("server=localhost;user=root;password=12345;database=ecomonitoringdb");
@@ -154,6 +156,32 @@ public partial class EcomonitoringdbContext : DbContext
                 .HasForeignKey<Result>(d => d.PollutionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("poll2_id");
+        });
+
+        modelBuilder.Entity<Loss>(entity =>
+        {
+            entity.HasKey(e => e.idLoss).HasName("PRIMARY");
+
+            entity.ToTable("losses");
+            entity.HasIndex(e => e.pollution_id, "pollution_id");
+
+            entity.Property(e => e.pollution_id).HasColumnName("pollution_id");
+            entity.Property(e => e.idLoss).HasColumnName("idLoss");
+            entity.Property(e => e.LossUAH).HasColumnName("LossUAH");
+            entity.Property(e => e.Mi).HasColumnName("Mi");
+            entity.Property(e => e.P).HasColumnName("P");
+            entity.Property(e => e.Ai).HasColumnName("Ai");
+            entity.Property(e => e.Kpop).HasColumnName("Kpop");
+            entity.Property(e => e.Kf).HasColumnName("Kf");
+            entity.Property(e => e.Kzi).HasColumnName("Kzi");
+            entity.Property(e => e.Qv).HasColumnName("Qv");
+            entity.Property(e => e.T).HasColumnName("T");
+            entity.Property(e => e.POP_).HasColumnName("POP_");
+
+            entity.HasOne(d => d.Pollution).WithMany(p => p.Losses)
+                .HasForeignKey(d => d.pollution_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("pollution_id");
         });
 
         OnModelCreatingPartial(modelBuilder);

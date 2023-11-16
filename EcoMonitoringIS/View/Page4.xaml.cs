@@ -38,7 +38,7 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid2, "Тривалість впливу\nроків", "ED");
                 DBGridControl.AddColumn(DBGrid2, "Маса тіла\nкг", "BW");
                 DBGridControl.AddColumn(DBGrid2, "Осереднення експозиції\nроків", "AT");
-                DBGridControl.AddColumn(DBGrid2, "Кількість  населення\nосіб", "POP");
+                DBGridControl.AddColumn(DBGrid2, "Кількість  населення\nосіб", "POP_");
 
 
                 DBGrid1.ItemsSource = context.Pollutions
@@ -54,6 +54,8 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid1, "(%)від заг. викидів", "Percent");
                 DBGridControl.AddColumn(DBGrid1, "Рік", "Year");
                 DBGridControl.AddColumn(DBGrid1, "Концентрація(мг/м3)", "Concentration");
+                DBGridControl.AddColumn(DBGrid1, "Коефіцієнт небезпеки", "HQ", true);
+                DBGridControl.AddColumn(DBGrid1, "Характеристика ризику", "rating", true);
 
             }
         }

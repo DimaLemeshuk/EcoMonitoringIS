@@ -187,6 +187,25 @@ namespace EcoMonitoringIS.Classes
                         MessageBox.Show("Сталася помилка при оновленні: " + ex.Message);
                     }
                 }
+                else if (editedItem is Loss loss)
+                {
+                    try
+                    {
+                        var curr = context.Results.Find(loss.idLoss);
+                        Binding binding = (e.Column as DataGridBoundColumn).Binding as Binding;
+                        string propertyName = binding.Path.Path;//змінене поле   
+                        PropertyInfo propertyInfo = (curr.GetType()).GetProperty(propertyName);
+                        propertyInfo.SetValue(curr, ConvertToNumberOrString(editedValue));
+                        curr.CalculateCR(curr.PollutionId);
+                        context.SaveChanges();
+                        MessageBox.Show("Зміни успішно збережено");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Сталася помилка при оновленні: " + ex.Message);
+                    }
+                }
             }
 
         }
