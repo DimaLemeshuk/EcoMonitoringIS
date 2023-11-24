@@ -58,7 +58,8 @@ namespace EcoMonitoringIS.Models
                 Ai = 1/ pollutant.Gdk;
                 Kzi = pollution.HQ;
                 LossUAH = Mi * 1.1 * P * Ai * Kpop * Kf * Kzi;
-                context.SaveChanges();
+                context.
+                SaveChanges();
             }
         }
 

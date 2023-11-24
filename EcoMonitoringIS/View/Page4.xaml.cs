@@ -38,7 +38,7 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid2, "Тривалість впливу\nроків", "ED");
                 DBGridControl.AddColumn(DBGrid2, "Маса тіла\nкг", "BW");
                 DBGridControl.AddColumn(DBGrid2, "Осереднення експозиції\nроків", "AT");
-                DBGridControl.AddColumn(DBGrid2, "Кількість  населення\nосіб", "POP_");
+                DBGridControl.AddColumn(DBGrid2, "Кількість  населення\nосіб", "POP");
 
 
                 DBGrid1.ItemsSource = context.Pollutions
