@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Printing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Crypto;
 
 namespace EcoMonitoringIS.Models;
 
@@ -25,6 +29,7 @@ public partial class EcomonitoringdbContext : DbContext
 
     public virtual DbSet<Result> Results { get; set; }
     public virtual DbSet<Loss> Losses { get; set; }
+    public virtual DbSet<Tax> Taxes { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -87,6 +92,7 @@ public partial class EcomonitoringdbContext : DbContext
             entity.Property(e => e.Gdk).HasColumnName("gdk");
             entity.Property(e => e.Mfr).HasColumnName("mfr");
             entity.Property(e => e.SF).HasColumnName("SF");
+            entity.Property(e => e.TaxRate).HasColumnName("taxRate");
             entity.Property(e => e.Name)
                 .HasMaxLength(300)
                 .HasColumnName("name");
@@ -180,6 +186,38 @@ public partial class EcomonitoringdbContext : DbContext
 
             entity.HasOne(d => d.Pollution).WithMany(p => p.Losses)
                 .HasForeignKey(d => d.pollution_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("pollution_id");
+        });
+
+  //      CREATE TABLE `ecomonitoringdb`.`taxes` (
+  //`idtax` INT NOT NULL AUTO_INCREMENT,
+  //`pollution_id` INT NOT NULL,
+  //`rate` DOUBLE NOT NULL,
+  //`taxUAH` DOUBLE NOT NULL,
+  //PRIMARY KEY(`idtax`),
+  //INDEX `pollution_id_idx` (`pollution_id` ASC) VISIBLE,
+  //CONSTRAINT `tax_pollution_id`
+  //  FOREIGN KEY(`pollution_id`)
+  //  REFERENCES `ecomonitoringdb`.`pollution` (`idpollution`)
+  //  ON DELETE NO ACTION
+  //  ON UPDATE NO ACTION);
+
+
+        modelBuilder.Entity<Tax>(entity =>
+        {
+            entity.HasKey(e => e.Idtax).HasName("PRIMARY");
+
+            entity.ToTable("taxes");
+            entity.HasIndex(e => e.PollutionId, "pollution_id");
+
+            entity.Property(e => e.PollutionId).HasColumnName("pollution_id");
+            entity.Property(e => e.Rate).HasColumnName("rate");
+            entity.Property(e => e.TaxUAH).HasColumnName("taxUAH");
+
+
+            entity.HasOne(d => d.Pollution).WithMany(p => p.Taxes)
+                .HasForeignKey(d => d.PollutionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("pollution_id");
         });

@@ -17,6 +17,7 @@ public partial class Pollutant
     public double Mfr { get; set; }
 
     public double SF { get; set; }
+    public double TaxRate { get; set; }
 
     public virtual ICollection<Pollution> Pollutions { get; set; } = new List<Pollution>();
 

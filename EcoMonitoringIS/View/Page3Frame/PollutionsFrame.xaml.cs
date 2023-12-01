@@ -24,9 +24,10 @@ namespace EcoMonitoringIS.View.Page3Frame
             double valueMfr;
             double percent;
             int year;
+            double concentration;
 
 
-            if (string.IsNullOrWhiteSpace(EnterpriseTextBox.Text) || string.IsNullOrWhiteSpace(PollutantTextBox.Text) || string.IsNullOrWhiteSpace(ValueMfrTextBox.Text) || string.IsNullOrWhiteSpace(PercentTextBox.Text) || string.IsNullOrWhiteSpace(YearTextBox.Text))
+            if (string.IsNullOrWhiteSpace(EnterpriseTextBox.Text) || string.IsNullOrWhiteSpace(PollutantTextBox.Text) || string.IsNullOrWhiteSpace(ValueMfrTextBox.Text) || string.IsNullOrWhiteSpace(PercentTextBox.Text) || string.IsNullOrWhiteSpace(YearTextBox.Text) || string.IsNullOrWhiteSpace(ConcentrationTextBox.Text))
             {
                 MessageBox.Show("Заповніть всі поля!");
             }
@@ -57,22 +58,22 @@ namespace EcoMonitoringIS.View.Page3Frame
                         MessageBox.Show("Недійсне значення відсотку викидів");
                         return;
                     }
-                    else if (!int.TryParse(PercentTextBox.Text, out year))
+                    else if (!int.TryParse(YearTextBox.Text, out year))
                     {
                         MessageBox.Show("Недійсне значення року");
+                        return;
+                    }
+                    else if (!double.TryParse(ConcentrationTextBox.Text.Replace('.', ','), out concentration))
+                    {
+                        MessageBox.Show("Недійсне значення концентрації");
                         return;
                     }
 
 
                     // Створення нового запису Pollution
-                    var newPollution = new Pollution
-                    {
-                        Enterprise = enterprise,
-                        Pollutant = pollutant,
-                        ValueMfr = valueMfr,
-                        Percent = percent,
-                        Year = year
-                    };         
+                    var newPollution = new Pollution();
+
+                    newPollution.Initialize(enterprise.Name, pollutant.Name, valueMfr, percent, year, concentration);
 
                     try
                     {

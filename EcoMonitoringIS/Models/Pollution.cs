@@ -30,6 +30,7 @@ public partial class Pollution
     public virtual Result? Result { get; set; }
 
     public ICollection<Loss> Losses { get; set; } = null!;
+    public ICollection<Tax> Taxes { get; set; } = null!;
 
     public Pollution()
     { }

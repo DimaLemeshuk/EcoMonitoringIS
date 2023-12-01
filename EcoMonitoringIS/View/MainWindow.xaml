@@ -72,6 +72,7 @@
                     <Button x:Name="Page3Button" Content="Додати нові дані" Style="{StaticResource LeftMenuButtonStyle}" Click="Page3Button_Click" />
                     <Button x:Name="Page4Button" Content="Канцерогенний ризик" Style="{StaticResource LeftMenuButtonStyle}" Click="Page4Button_Click" />
                     <Button x:Name="Page5Button" Content="Відшкодування" Style="{StaticResource LeftMenuButtonStyle}" Click="Page5Button_Click" />
+                    <Button x:Name="Page6Button" Content="Податки" Style="{StaticResource LeftMenuButtonStyle}" Click="Page6Button_Click" />
                 </StackPanel>
             </Grid>
 

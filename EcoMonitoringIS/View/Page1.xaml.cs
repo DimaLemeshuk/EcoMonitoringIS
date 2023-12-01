@@ -105,6 +105,7 @@ namespace EcoMonitoringIS.View
                 DBGridControl.AddColumn(DBGrid, "Граничнодопустимі\n викиди (мг/м3)", "Gdk");
                 DBGridControl.AddColumn(DBGrid, "Величина масової\n витрати (г/год)", "Mfr");
                 DBGridControl.AddColumn(DBGrid, "SFi(\n(мг/(кг*доба)^(-1)", "SF");
+                DBGridControl.AddColumn(DBGrid, "Ставка податку\n(грн/т)", "SF");
 
             }
             //DBGrid.CellEditEnding += DBGrid_CellEditEndingPollutants;
