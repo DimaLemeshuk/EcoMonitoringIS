@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EcoMonitoringIS.Models.Belonging">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAQAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Belonging.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoMonitoringIS.Models.EcomonitoringdbContext">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAQAwAAAAAQAAAAAAHIAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\EcomonitoringdbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoMonitoringIS.Models.Enterprise">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAEAIAAAQAAAAAAAIQAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Models\Enterprise.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoMonitoringIS.Models.Loss">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgQAAAAAAQgEQAAAAAACAAAAAAgACAAAIBGAAA=</HashCode>
+      <FileName>Models\Loss.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoMonitoringIS.Models.Pollutant">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCAAAIACAAAAAACAABAAACQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Pollutant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoMonitoringIS.Models.Pollution">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABBAAHAAgAQAAAgACAAQAAwAEAAAAAIAACgAAAAA=</HashCode>
+      <FileName>Models\Pollution.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoMonitoringIS.Models.Result">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gACAAAAAgATAYIQcAaAAIAAAAICIAACAiAEAAgABAAA=</HashCode>
+      <FileName>Models\Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoMonitoringIS.Models.Tax">
+    <Position X="2" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACAAAAAEAQAAAAAAQAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Tax.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

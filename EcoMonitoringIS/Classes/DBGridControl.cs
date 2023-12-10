@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,22 @@ namespace EcoMonitoringIS.Classes
             {
                 Header = newName,
                 Binding = new Binding(PropertyName),
+                IsReadOnly = ReadOnly
+            });
+
+        }
+
+        public static void AddColumn(DataGrid DBGrid, string newName, string PropertyName, bool ReadOnly, string format)
+        {
+
+            DBGrid.AutoGenerateColumns = false;
+            DBGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = newName,
+                Binding = new Binding(PropertyName)
+                {
+                    StringFormat = format//"#.##"
+                },
                 IsReadOnly = ReadOnly
             });
 

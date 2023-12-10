@@ -114,8 +114,8 @@
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Повний обсяг податків що повинне сплатити підприємство за рік:" Style="{StaticResource TextStyle}"/>
-                <!--<Button x:Name="СalculateButton" Grid.Column="1" Content="Розрахувати" Height="30" Width="auto" Margin="0 30 30 0" HorizontalAlignment="Stretch" Click="СalculateButton_Click"/>-->
+                <TextBlock Grid.Column="0" Text="Повний обсяг податків що повинне сплатити підприємство:" Style="{StaticResource TextStyle}"/>
+                <Button x:Name="Year_Name_Button" Grid.Column="1" Content="Групувати за роком" Height="30" Width="auto" Margin="0 30 30 0" HorizontalAlignment="Stretch" Click="Year_Name_Button_Click"/>
             </Grid>
 
             <DataGrid x:Name="DBGrid1" Grid.Row="1" Style="{StaticResource DataGridStyle}" Margin=" 30 20 30 30" IsReadOnly="True">
